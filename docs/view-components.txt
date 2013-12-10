@@ -1,0 +1,61 @@
+﻿-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Componentes camada de visualização -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+Componentes de Entrada
+	Label
+	Texto
+	Numérico
+	Decimal
+	Data
+	Máscara
+	Monetário
+	Senha
+	Autocompletar
+	Lista
+	Lista Múltipla
+	Checkbox
+	Checkbox Múltiplo
+	Seleção
+	Área de Texto
+	Imagem
+	Upload
+	Download
+	Botão
+	Link
+
+Componentes de Navegação
+	Hyperlink
+	Menu
+
+Componentes Template
+
+	Error Handling?
+
+Outros Componentes
+	Help Block
+	Option Group
+	Image Upload
+	Image Crop
+	Image Resize
+	Date Picker
+	Color Picker
+	Time Picker
+	Password Strengh
+	Text Area Delimiter
+	Breadcrumbs
+
+
+Effects and State
+	Focus State
+	Error State
+	Warning State
+	Success State
+	Disabled
+
+Formating
+	col size
+	mini, small, medium,
+
+Orientation
+	Horizontal Form
+	Inline Form

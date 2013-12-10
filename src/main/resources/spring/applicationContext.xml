@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ctx="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/aop
+						   http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	<!-- =================================================================================================== -->
+	<!-- CONTEXT CONFIGURATION -->
+	<ctx:component-scan base-package="br.com.delogic" />
+	<ctx:annotation-config />
+	<!-- =================================================================================================== -->
+	<!-- MANAGERS -->
+	<bean id="uploadManager" class="br.com.delogic.cbsa.manager.standard.LocalUploadManager">
+		<property name="directory" value="/WEB-INF/test" />
+		<property name="iterator">
+			<bean class="br.com.delogic.cbsa.util.TimeIterator" />
+		</property>
+	</bean>
+	<aop:aspectj-autoproxy proxy-target-class="false" />
+	<bean id="tracingManager"
+		class="br.com.delogic.cbsa.manager.standard.TracingManagerAdvice">
+		<property name="packages">
+			<list>
+				<value>br.com.delogic.cbsa.controller</value>
+				<value>br.com.delogic.showcase.controller</value>
+			</list>
+		</property>
+	</bean>
+	<!-- =================================================================================================== -->
+	<!-- SPRING MVC -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="br.com.delogic.showcase.converter.UserConverter" />
+				<bean class="br.com.delogic.showcase.converter.AccountTypeConverter" />
+				<bean class="br.com.delogic.showcase.converter.AccountConverter" />
+			</list>
+		</property>
+		<property name="formatters">
+			<list>
+				<bean class="br.com.delogic.cbsa.formatter.DateFormatter" />
+				<bean class="br.com.delogic.cbsa.formatter.IntegerFormatter" />
+				<bean class="br.com.delogic.cbsa.formatter.LongFormatter" />
+<!-- 				<bean class="br.com.delogic.cbsa.formatter.BigDecimalFormatter" /> -->
+			</list>
+		</property>
+	</bean>
+	<mvc:annotation-driven conversion-service="conversionService" />
+	<mvc:resources mapping="/static-content/**" location="/WEB-INF/test/" />
+	<mvc:default-servlet-handler />
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html" />
+				<entry key="json" value="application/json" />
+				<entry key="xml" value="application/xml" />
+			</map>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+					p:exposeContextBeansAsAttributes="true">
+					<property name="viewClass"
+						value="org.springframework.web.servlet.view.JstlView" />
+					<property name="prefix" value="/WEB-INF/pages/" />
+					<property name="suffix" value=".jsp" />
+				</bean>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<property name="marshaller">
+						<bean class="org.springframework.oxm.castor.CastorMarshaller">
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- =================================================================================================== -->
+	<!-- I18N -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+				<property name="paramName" value="lang" />
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/i18n/messages" />
+		<property name="fallbackToSystemLocale" value="false" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="pt_BR" />
+	</bean>
+	<!-- =================================================================================================== -->
+	<!-- FILE UPLOAD -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:maxUploadSize="1000000" />
+</beans>
