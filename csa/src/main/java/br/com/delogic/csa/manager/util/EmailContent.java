@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import br.com.delogic.csa.util.f;
+import br.com.delogic.csa.util.is;
 
 public class EmailContent {
 
@@ -49,7 +49,7 @@ public class EmailContent {
     }
 
     public String getHtmlContent() {
-        if (f.isEmpty(htmlContent) && f.notNull(url)) {
+        if (is.empty(htmlContent) && is.notEmpty(url)) {
             htmlContent = getContent(url);
         }
         return htmlContent;

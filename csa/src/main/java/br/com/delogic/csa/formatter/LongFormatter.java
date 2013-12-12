@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import org.springframework.format.Formatter;
 
-import br.com.delogic.csa.util.f;
+import br.com.delogic.csa.util.is;
 
 public class LongFormatter implements Formatter<Long> {
 
@@ -16,7 +16,7 @@ public class LongFormatter implements Formatter<Long> {
 
 	@Override
 	public Long parse(String text, Locale locale) throws ParseException {
-		return f.hasValue(text) && f.isNumber(text) ? Long.valueOf(text) : null;
+		return is.notEmpty(text) && is.number(text) ? Long.valueOf(text) : null;
 	}
 
 }

@@ -1,6 +1,7 @@
 package br.com.delogic.csa.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.delogic.csa.controller.util.UploadedFile;
 import br.com.delogic.csa.manager.UploadManager;
-import br.com.delogic.csa.util.f;
 
 @Controller
 @RequestMapping("/upload")
@@ -31,8 +31,7 @@ public class UploadController {
                 multipartFile.getInputStream(),
                 multipartFile.getOriginalFilename());
             String filePath = uploadManager.get(fileName);
-            return new ModelAndView().addObject("files", f
-                .arrayList(new UploadedFile(fileName, multipartFile
+            return new ModelAndView().addObject("files", Arrays.asList(new UploadedFile(fileName, multipartFile
                     .getSize(), filePath, null, null, null)));
         } catch (IOException e) {
             throw new RuntimeException(e);

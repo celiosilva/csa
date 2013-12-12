@@ -18,7 +18,7 @@ public class DatabaseIterator implements Iterator<Long>, InitializingBean {
 
     @Override
     public boolean hasNext() {
-        return dataSource != null && f.notEmpty(query);
+        return dataSource != null && is.notEmpty(query);
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import org.springframework.format.Formatter;
 
-import br.com.delogic.csa.util.f;
+import br.com.delogic.csa.util.is;
 
 public class IntegerFormatter implements Formatter<Integer> {
 
@@ -16,7 +16,7 @@ public class IntegerFormatter implements Formatter<Integer> {
 
 	@Override
 	public Integer parse(String text, Locale locale) throws ParseException {
-		return f.hasValue(text) && f.isNumber(text) ? Integer.valueOf(text)
+		return is.notEmpty(text) && is.number(text) ? Integer.valueOf(text)
 				: null;
 	}
 

@@ -22,7 +22,8 @@ import br.com.delogic.csa.manager.EmailManager;
 import br.com.delogic.csa.manager.util.EmailAddress;
 import br.com.delogic.csa.manager.util.EmailContent;
 import br.com.delogic.csa.util.Converter;
-import br.com.delogic.csa.util.f;
+import br.com.delogic.csa.util.Do;
+import br.com.delogic.csa.util.is;
 
 public class EmailManagerImpl implements EmailManager {
 
@@ -38,10 +39,10 @@ public class EmailManagerImpl implements EmailManager {
 
         List<EmailAddress> emailTos = new ArrayList<EmailAddress>();
         emailTos.add(to);
-        if (f.notEmpty(tos)) {
+        if (is.notEmpty(tos)) {
             emailTos.addAll(Arrays.asList(tos));
         }
-        final List<InternetAddress> addressesTo = f.convertList(emailTos,
+        final List<InternetAddress> addressesTo = Do.convertList(emailTos,
             new Converter<EmailAddress, InternetAddress>() {
                 @Override
                 public InternetAddress convert(EmailAddress in) {

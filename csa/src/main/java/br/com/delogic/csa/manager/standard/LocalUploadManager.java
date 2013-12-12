@@ -15,7 +15,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.ServletContextAware;
 
 import br.com.delogic.csa.manager.UploadManager;
-import br.com.delogic.csa.util.f;
+import br.com.delogic.csa.util.is;
 
 public class LocalUploadManager implements UploadManager, ServletContextAware {
 
@@ -37,7 +37,7 @@ public class LocalUploadManager implements UploadManager, ServletContextAware {
 
 	@Override
 	public String get(String name) {
-	    if (!f.hasValue(name)){
+	    if (!is.notEmpty(name)){
 	        return "";
 	    }
 		return contextPath + path + name;
