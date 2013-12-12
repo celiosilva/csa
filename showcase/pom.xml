@@ -2,10 +2,11 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.delogic</groupId>
-    <artifactId>csa</artifactId>
+    <artifactId>csa-showcase</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Common Business Software Architecture</name>
+    <name>CSA Showcase</name>
+
     <properties>
         <org.springframework.version>3.2.4.RELEASE</org.springframework.version>
         <jackson.version>2.2.3</jackson.version>
@@ -13,7 +14,15 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
     </properties>
+
     <dependencies>
+
+        <dependency>
+            <groupId>br.com.delogic</groupId>
+            <artifactId>csa</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- =============================================== -->
         <!-- AMAZON WEB SERVICES API -->
         <dependency>
