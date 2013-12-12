@@ -1,4 +1,0 @@
-csa
-===
-
-Cloud Software Architecture
