@@ -37,7 +37,7 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
 
     @Override
     public String get(String name) {
-        if (!is.notEmpty(name)){
+        if (is.empty(name)){
             return "";
         }
         return contextPath + path + name;
