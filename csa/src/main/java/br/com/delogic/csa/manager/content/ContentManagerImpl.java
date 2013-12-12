@@ -9,7 +9,8 @@ import java.util.Iterator;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.ServletContextAware;
@@ -19,15 +20,14 @@ import br.com.delogic.csa.util.is;
 
 public class ContentManagerImpl implements ContentManager, ServletContextAware {
 
-    private Resource directory;
-    private String absolutePath;
+    private Resource                   directory;
+    private String                     absolutePath;
     private Iterator<? extends Object> iterator;
-    private String contextPath;
-    private String path = "/static-content/";
-    private ServletContext context;
+    private String                     contextPath;
+    private String                     path   = "/static-content/";
+    private ServletContext             context;
 
-    private static final Logger logger = Logger
-            .getLogger(ContentManagerImpl.class);
+    private static final Logger        logger = LoggerFactory.getLogger(ContentManagerImpl.class);
 
     @PostConstruct
     public void init() throws Exception {
@@ -37,7 +37,7 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
 
     @Override
     public String get(String name) {
-        if (is.empty(name)){
+        if (is.empty(name)) {
             return "";
         }
         return contextPath + path + name;
@@ -48,7 +48,7 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
         String val = iterator.next().toString();
         String newFileName = "file" + val + "." + getFileExtension(fileName);
         saveToServer(inputStream, absolutePath + File.separatorChar,
-                newFileName);
+            newFileName);
         return newFileName;
     }
 
@@ -59,23 +59,23 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
 
     private String getFileExtension(String fileName) {
         if (fileName == null || !fileName.contains(".")
-                || fileName.endsWith(".")) {
+            || fileName.endsWith(".")) {
             throw new IllegalArgumentException(
-                    "File name doesn't have any extension");
+                "File name doesn't have any extension");
         }
         return fileName.substring(fileName.indexOf(".") + 1);
     }
 
     public static void saveToServer(InputStream inputStream,
-            String directoryPath, String fileName) {
+        String directoryPath, String fileName) {
         try {
             logger.debug("Saving content " + directoryPath + fileName);
             FileCopyUtils.copy(inputStream, new FileOutputStream(directoryPath
-                    + fileName));
+                + fileName));
         } catch (IOException e) {
             logger.error("Cannot save content", e);
             throw new RuntimeException("Cannot save content with name "
-                    + fileName, e);
+                + fileName, e);
         }
     }
 
