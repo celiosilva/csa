@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import org.springframework.format.Formatter;
 
-import br.com.delogic.csa.util.Has;
 import br.com.delogic.csa.util.is;
 
 public class BigDecimalFormatter implements Formatter<BigDecimal> {
@@ -27,7 +26,7 @@ public class BigDecimalFormatter implements Formatter<BigDecimal> {
         // TODO alterar para utilizar o locale e i18n
         DecimalFormat decimalFormat = new DecimalFormat();
         decimalFormat.setDecimalFormatSymbols(DecimalFormatSymbols
-                .getInstance(locale));
+            .getInstance(locale));
 
         try {
             return new BigDecimal(decimalFormat.parse(text).doubleValue());

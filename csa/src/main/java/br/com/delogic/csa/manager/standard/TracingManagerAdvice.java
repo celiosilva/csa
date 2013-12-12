@@ -12,40 +12,40 @@ import br.com.delogic.csa.manager.util.TracingAdvice;
 import br.com.delogic.csa.manager.util.TracingPointcut;
 
 public class TracingManagerAdvice implements TracingManager, PointcutAdvisor,
-		InitializingBean {
+        InitializingBean {
 
-	private Advice advice;
-	private Pointcut pointcut;
+    private Advice advice;
+    private Pointcut pointcut;
 
-	private List<String> packages;
+    private List<String> packages;
 
-	@Override
-	public Advice getAdvice() {
-		return advice;
-	}
+    @Override
+    public Advice getAdvice() {
+        return advice;
+    }
 
-	@Override
-	public boolean isPerInstance() {
-		return false;
-	}
+    @Override
+    public boolean isPerInstance() {
+        return false;
+    }
 
-	@Override
-	public Pointcut getPointcut() {
-		return pointcut;
-	}
+    @Override
+    public Pointcut getPointcut() {
+        return pointcut;
+    }
 
-	public List<String> getPackages() {
-		return packages;
-	}
+    public List<String> getPackages() {
+        return packages;
+    }
 
-	public void setPackages(List<String> packages) {
-		this.packages = packages;
-	}
+    public void setPackages(List<String> packages) {
+        this.packages = packages;
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		advice = new TracingAdvice();
-		pointcut = new TracingPointcut(packages);
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        advice = new TracingAdvice();
+        pointcut = new TracingPointcut(packages);
+    }
 
 }

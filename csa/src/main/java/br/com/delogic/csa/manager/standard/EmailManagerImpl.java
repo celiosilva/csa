@@ -34,7 +34,7 @@ public class EmailManagerImpl implements EmailManager {
 
     private final Executor      executor = Executors.newSingleThreadExecutor();
 
-    public boolean sendEmail(final EmailAddress from, final EmailAddress replyTo, final EmailContent content,
+    public boolean send(final EmailAddress from, final EmailAddress replyTo, final EmailContent content,
         final EmailAddress to, final EmailAddress... tos) {
 
         List<EmailAddress> emailTos = new ArrayList<EmailAddress>();
@@ -84,27 +84,27 @@ public class EmailManagerImpl implements EmailManager {
     }
 
     @Override
-    public boolean sendEmail(EmailAddress from, EmailContent content, EmailAddress to, EmailAddress... tos) {
-        return sendEmail(from, from, content, to, tos);
+    public boolean send(EmailAddress from, EmailContent content, EmailAddress to, EmailAddress... tos) {
+        return send(from, from, content, to, tos);
     }
 
     @Override
-    public void sendEmailAsynchronously(final EmailAddress from, final EmailAddress replyTo, final EmailContent content,
+    public void sendAsynchronously(final EmailAddress from, final EmailAddress replyTo, final EmailContent content,
         final EmailAddress to, final EmailAddress... tos) {
         log.info("Sendign email asynchronously");
 
         Runnable email = new Runnable() {
             @Override
             public void run() {
-                sendEmail(from, replyTo, content, to, tos);
+                send(from, replyTo, content, to, tos);
             }
         };
         executor.execute(email);
     }
 
     @Override
-    public void sendEmailAsynchronously(EmailAddress from, EmailContent content, EmailAddress to, EmailAddress... tos) {
-        sendEmailAsynchronously(from, from, content, to, tos);
+    public void sendAsynchronously(EmailAddress from, EmailContent content, EmailAddress to, EmailAddress... tos) {
+        sendAsynchronously(from, from, content, to, tos);
     }
 
 }

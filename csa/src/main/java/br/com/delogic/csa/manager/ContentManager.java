@@ -2,7 +2,7 @@ package br.com.delogic.csa.manager;
 
 import java.io.InputStream;
 
-public interface UploadManager {
+public interface ContentManager {
 
 	/**
 	 * Stores the content with a new name.

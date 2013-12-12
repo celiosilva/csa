@@ -14,14 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.delogic.csa.controller.util.UploadedFile;
-import br.com.delogic.csa.manager.UploadManager;
+import br.com.delogic.csa.manager.ContentManager;
 
 @Controller
 @RequestMapping("/upload")
 public class UploadController {
 
     @Inject
-    private UploadManager uploadManager;
+    private ContentManager uploadManager;
 
     @RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT })
     @ResponseBody
@@ -38,11 +38,11 @@ public class UploadController {
         }
     }
 
-    public UploadManager getUploadManager() {
+    public ContentManager getUploadManager() {
         return uploadManager;
     }
 
-    public void setUploadManager(UploadManager uploadManager) {
+    public void setUploadManager(ContentManager uploadManager) {
         this.uploadManager = uploadManager;
     }
 
