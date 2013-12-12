@@ -9,7 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import br.com.delogic.csa.manager.TracingManager;
 
-public class TracingManagerAdvice implements TracingManager, PointcutAdvisor,
+public class TracingManagerAdviceImpl implements TracingManager, PointcutAdvisor,
         InitializingBean {
 
     private Advice advice;

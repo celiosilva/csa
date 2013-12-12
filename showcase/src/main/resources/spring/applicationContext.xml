@@ -19,7 +19,7 @@
     <ctx:annotation-config />
     <!-- =================================================================================================== -->
     <!-- MANAGERS -->
-    <bean id="uploadManager" class="br.com.delogic.csa.manager.standard.LocalUploadManager">
+    <bean id="uploadManager" class="br.com.delogic.csa.manager.content.ContentManagerImpl">
         <property name="directory" value="/WEB-INF/test" />
         <property name="iterator">
             <bean class="br.com.delogic.csa.util.TimeIterator" />
@@ -27,7 +27,7 @@
     </bean>
     <aop:aspectj-autoproxy proxy-target-class="false" />
     <bean id="tracingManager"
-        class="br.com.delogic.csa.manager.standard.TracingManagerAdvice">
+        class="br.com.delogic.csa.manager.tracing.TracingManagerAdviceImpl">
         <property name="packages">
             <list>
                 <value>br.com.delogic.csa.controller</value>
