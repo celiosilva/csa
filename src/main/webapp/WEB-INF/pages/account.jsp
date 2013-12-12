@@ -50,36 +50,36 @@
       <a href="../accounts" class="btn btn-default">Voltar</a>
    </f:form>
    <script type="text/javascript">
-				$(document).ready(function() {
-					$('.text-danger').parent().parent().addClass('has-error');
-					$('.text-danger').parent().addClass('has-error');
-					$('#bankAccount').inputmask("integer");
-					$('#balance').inputmask('decimal', {
-						radixPoint : ",",
-						digits : 2,
-						autoGroup : true,
-						groupSeparator : ".",
-						groupSize : 3
-					});
-					$('#user\\.nome').autocomplete({
-						serviceUrl : '/cbsa/users',
-						dataType : 'json',
-						onSelect : function(suggestion) {
-							$('#user\\.id').val(suggestion.data);
-						},
-						transformResult : transformAutoComplete
-					});
-					$('#accountType').chosen({});
-				});
-				function transformAutoComplete(response) {
-					return {
-						suggestions : $.map(response.users, function(dataItem) {
-							return {
-								value : dataItem.nome,
-								data : dataItem.id
-							};
-						})
-					};
-				}
-			</script>
+                $(document).ready(function() {
+                    $('.text-danger').parent().parent().addClass('has-error');
+                    $('.text-danger').parent().addClass('has-error');
+                    $('#bankAccount').inputmask("integer");
+                    $('#balance').inputmask('decimal', {
+                        radixPoint : ",",
+                        digits : 2,
+                        autoGroup : true,
+                        groupSeparator : ".",
+                        groupSize : 3
+                    });
+                    $('#user\\.nome').autocomplete({
+                        serviceUrl : '/csa/users',
+                        dataType : 'json',
+                        onSelect : function(suggestion) {
+                            $('#user\\.id').val(suggestion.data);
+                        },
+                        transformResult : transformAutoComplete
+                    });
+                    $('#accountType').chosen({});
+                });
+                function transformAutoComplete(response) {
+                    return {
+                        suggestions : $.map(response.users, function(dataItem) {
+                            return {
+                                value : dataItem.nome,
+                                data : dataItem.id
+                            };
+                        })
+                    };
+                }
+            </script>
 </t:template>

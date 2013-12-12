@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="CBSA Showcase">
+<meta name="description" content="CSA Showcase">
 <meta name="author" content="delogic.com.br">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- Bootstrap -->
@@ -44,8 +44,8 @@
 <!-- CUSTOM RESOURCES -->
 <link href="${root}/resources/css/style.css" rel="stylesheet" media="screen" />
 <link href="${root}/resources/css/position.css" rel="stylesheet" />
-<script src="${root}/resources/js/cbsa.js"></script>
-<title>CBSA</title>
+<script src="${root}/resources/js/csa.js"></script>
+<title>CSA</title>
 </head>
 <body>
    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -55,7 +55,7 @@
                data-toggle="offcanvas">
                <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${root}/showcase/view">Delogic-CBSA</a>
+            <a class="navbar-brand" href="${root}/showcase/view">Delogic-CSA</a>
             <button type="button" class="navbar-toggle btn btn-primary" data-toggle="collapse"
                data-target=".navbar-collapse">
                <span class="caret"></span>

@@ -1,163 +1,163 @@
-﻿Projeto Arquitetura 2.0 - CBSA
+﻿Projeto Arquitetura 2.0 - CSA
 
-	Este projeto cria uma nova arquitetura que atende as necessidades da web 2.0, que busca cada vez mais conectividade, com o mesmo aplicativo executado em diferentes dispositivos, com resoluções diferentes, tamanhos, tecnologias e interatividade com o usuário. Analisando o mercado de aplicações podemos agrupar e categorizar os diferentes clientes partir de:
-	1. Desktop
-		Navegadores (Chrome, Firefox, Safari, I.E., etc)
-		Windows Apps (HTML, Javascript)
-		Aplicações Nativas Nativas (C/C++, Adobe Flex, etc)
-	
-	2. Tablets
-		Navegadores (Chrome, Firefox, Safari, I.E.)
-		Aplicações Nativas (iOS, Android, Windows)
-	
-	3. Celulares/Smartphones
-		Navegadores (Chrome, Firefox, Safari, I.E.)
-		Aplicações Nativas (iOS, Android, Windows Apps)
-		
-	Tendo em vista que os clientes em sua maioria são navegadores, consumidores de HTML, Javascript e CSS e aplicações nativas, que consomem informações para movimentar seus aplicativos, os servidores precisam prover na mesma interface as informações para funcionamento dos Navegadores, HTML, CSS, Javascript e as informações que outras camadas de dispositivos nativos necessitem, e.g., JSON e XML.
+    Este projeto cria uma nova arquitetura que atende as necessidades da web 2.0, que busca cada vez mais conectividade, com o mesmo aplicativo executado em diferentes dispositivos, com resoluções diferentes, tamanhos, tecnologias e interatividade com o usuário. Analisando o mercado de aplicações podemos agrupar e categorizar os diferentes clientes partir de:
+    1. Desktop
+        Navegadores (Chrome, Firefox, Safari, I.E., etc)
+        Windows Apps (HTML, Javascript)
+        Aplicações Nativas Nativas (C/C++, Adobe Flex, etc)
 
-	Requisitos para o desenvolvimento do cliente em navegadores
-	1. Informação (HTML, JSON, XML)
-	2. Beleza (CSS)
-	3. Interatividade (Javascript)
-	4. Performance (Utilizar CDNs para distribuir o conteï؟½do)
-	5. Layout responsivo (Media Queries)
-	6. Economia de dados (Carregar apenas quando solicitado)
-	7. Segurança
-	
-	Requisitos para o desenvolvimento dos Serviços para diferentes clientes
-	1. Informação (Prover informação em HTML, JSON e XML)
-	2. Unicidade (Permitir que a mesma interface provenha diferentes tipos de resposta)
-	3. Segurança (Garantir que os serviços são acessados apenas por quem deve ter seu devido acesso)
-	
-	Requisitos gerais da plataforma
-	Multi-Plataforma - Poder operar em servidores locais ou em cloud
-	Multi-Cliente - Prover serviços para diferentes clientes
-	HTML5 Friendly - Poder utilizar html5
-	Cliente Responsivo - Poder renderizar em clientes de diferentes tamanhos
-	
-	Camadas e Tecnologias
-	1. Clientes (Navegadores)
-		Informação (HTML, JSON, XML, Audio/Vï؟½deo)
-		Aparência (CSS)
-		Comportamento/Interatividade (Javascript, Flash)
-		
-	2. Serviços
-		MVC (Java)
-		Business (Java)
-		Repositórios (Bancos de dados, Web-services, Arquivos, Filas, etc)
-	
-	
-	Frameworks e Componentes
-	1. Clientes (Navegadores)
-		jQuery + plugins
-		Bootstrap
-		
-	2. Serviços
-		Tecnologia View*
-		Spring
-		JPA
-		Componentes Próprios
-	
-Itens em Aberto	
-	Para continuar a pesquisa é necessário pesquisar alguma tecnologia de view que seja integrada aos serviços rest do Spring e ao mesmo tempo seja integrável com as tecnologias do cliente, HTML/5, jQuery, CSS. Os requisitos necessários para a tecnologia de view são:
+    2. Tablets
+        Navegadores (Chrome, Firefox, Safari, I.E.)
+        Aplicações Nativas (iOS, Android, Windows)
+
+    3. Celulares/Smartphones
+        Navegadores (Chrome, Firefox, Safari, I.E.)
+        Aplicações Nativas (iOS, Android, Windows Apps)
+
+    Tendo em vista que os clientes em sua maioria são navegadores, consumidores de HTML, Javascript e CSS e aplicações nativas, que consomem informações para movimentar seus aplicativos, os servidores precisam prover na mesma interface as informações para funcionamento dos Navegadores, HTML, CSS, Javascript e as informações que outras camadas de dispositivos nativos necessitem, e.g., JSON e XML.
+
+    Requisitos para o desenvolvimento do cliente em navegadores
+    1. Informação (HTML, JSON, XML)
+    2. Beleza (CSS)
+    3. Interatividade (Javascript)
+    4. Performance (Utilizar CDNs para distribuir o conteï؟½do)
+    5. Layout responsivo (Media Queries)
+    6. Economia de dados (Carregar apenas quando solicitado)
+    7. Segurança
+
+    Requisitos para o desenvolvimento dos Serviços para diferentes clientes
+    1. Informação (Prover informação em HTML, JSON e XML)
+    2. Unicidade (Permitir que a mesma interface provenha diferentes tipos de resposta)
+    3. Segurança (Garantir que os serviços são acessados apenas por quem deve ter seu devido acesso)
+
+    Requisitos gerais da plataforma
+    Multi-Plataforma - Poder operar em servidores locais ou em cloud
+    Multi-Cliente - Prover serviços para diferentes clientes
+    HTML5 Friendly - Poder utilizar html5
+    Cliente Responsivo - Poder renderizar em clientes de diferentes tamanhos
+
+    Camadas e Tecnologias
+    1. Clientes (Navegadores)
+        Informação (HTML, JSON, XML, Audio/Vï؟½deo)
+        Aparência (CSS)
+        Comportamento/Interatividade (Javascript, Flash)
+
+    2. Serviços
+        MVC (Java)
+        Business (Java)
+        Repositórios (Bancos de dados, Web-services, Arquivos, Filas, etc)
 
 
-	OK - Previnir erros de Encoding (UTF-8)
-	OK - Templating
-	OK - Fácil componentização
-	OK - Binding de dados
-	OK - HTML friendly
-	OK - Integração com HTML5
-	OK - Validação de dados via JSR303
-	OK - Upload ajax
-	
-	6. I18N
-		ok - Labels
-		ok - Componentes
-		Enums
-		Exceptions
-		Messages
-		
-	
-	9. Thread Safe
-	10. Uso via post comum e ajax
-	11. Uso de cache distribuído
-	12. Uso de toda a infraestrutura de Managers como serviços locais, distribuidos e cloud (AWS)
-	14. Componentes
-	15. Build como jar e biblioteca do maven
-	16. Criar showcase com layout para sistemas empresariais
-	
-	Criação de componentes
-	
-	Ideias:
-		Criar um conjunto de tags baseados na construção do bootstrap para aumentar a produtividade no desenvolvimento do sistema.
-		Criar serviços em controlers para infraestrutura:
-			ContentController --> ContentManager
-			MenuController --> MenuManager
-			CacheManager
-			EmailManager
-			
-	
-	Resources
-	http://blog.springsource.org/2012/08/29/integrating-spring-mvc-with-jquery-for-validation-rules/
-	http://en.wikipedia.org/wiki/Progressive_enhancement
-	http://www.mkyong.com/spring-mvc/spring-3-mvc-and-jsr303-valid-example/
-	http://www.openscope.net/2010/02/08/spring-mvc-3-0-and-jsr-303-aka-javax-validation/
-	http://codetutr.com/2013/05/28/spring-mvc-form-validation/
-	http://stackoverflow.com/questions/2513863/jsr-303-bean-validation-javascript-client-side-validation
-	http://blog.springsource.org/2012/08/29/integrating-spring-mvc-with-jquery-for-validation-rules/
-	http://blog.springsource.org/2012/10/30/spring-mvc-from-jsp-and-tiles-to-thymeleaf/
-	http://blog.springsource.org/2013/03/26/bringing-new-life-to-spring-travel-with-thymeleaf/
-	http://blog.springsource.org/2009/11/17/spring-3-type-conversion-and-validation/
-	http://stackoverflow.com/questions/9679332/jsr-303-is-it-possible-to-validate-whole-graph-automatically
-	http://tapestry.apache.org/bean-validation.html
-	http://msdn.microsoft.com/en-us/library/ff649690.aspx
-	http://en.wikipedia.org/wiki/Internet_media_type
-	http://en.wikipedia.org/wiki/Content_negotiation
-	http://norrisshelton.wordpress.com/2012/07/15/spring-3-mvc-with-json-via-jackson-2-0/
-	http://en.wikipedia.org/wiki/Progressive_enhancement
-	http://thespringthing.blogspot.com.br/2010/11/how-does-modelattribute-work.html
-	http://java.dzone.com/articles/content-negotiation-using
-	http://www.youtube.com/watch?v=SC0FPuDKei0
-	http://www.youtube.com/watch?v=wylViAqNiRA
-	http://www.youtube.com/watch?v=k32KqrckLEE
-	http://www.youtube.com/watch?v=ncvsqYBLeq8
-	http://www.youtube.com/watch?v=8uBcpsIEz2I
-	http://www.youtube.com/watch?v=wZHU-U9WzNc
-	http://www.bkumar.co.uk/2012/06/26/domain-entity-converter-in-spring-mvc-application/
-	http://stackoverflow.com/questions/138948/how-to-get-utf-8-working-in-java-webapps
-	
-	I18N
-	http://vmustafayev4en.blogspot.com.br/2012/09/spring-3-mvc-internationalization.html
-	http://www.mkyong.com/spring-mvc/spring-mvc-internationalization-example/
-	
-	Doctype
-	http://www.w3schools.com/tags/tag_doctype.asp
-	
-	CDNS
-	http://encosia.com/3-reasons-why-you-should-let-google-host-jquery-for-you/
-	
-	JSP Templating
-	http://stackoverflow.com/questions/1296235/jsp-tricks-to-make-templating-easier
-	
-	File Upload
-	http://viralpatel.net/blogs/spring-mvc-multiple-file-upload-example/
-	https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
-	http://krams915.blogspot.com.br/2012/06/file-upload-with-spring-and-jquery-part_2793.html
-	
-	Updating multiple rows with spring
-	http://viralpatel.net/blogs/spring-mvc-multi-row-submit-java-list/
-	
-	Grid
-	http://dandelion.github.io/datatables/
-	
-	jQuery Mask Input
-	https://github.com/RobinHerbots/jquery.inputmask
-	
-	jQuery AutoComplete
-	https://github.com/devbridge/jQuery-Autocomplete
-	
-	
-	http://developer.yahoo.com/performance/rules.html
-	http://www.1stwebdesigner.com/design/load-javascript-faster/
+    Frameworks e Componentes
+    1. Clientes (Navegadores)
+        jQuery + plugins
+        Bootstrap
+
+    2. Serviços
+        Tecnologia View*
+        Spring
+        JPA
+        Componentes Próprios
+
+Itens em Aberto
+    Para continuar a pesquisa é necessário pesquisar alguma tecnologia de view que seja integrada aos serviços rest do Spring e ao mesmo tempo seja integrável com as tecnologias do cliente, HTML/5, jQuery, CSS. Os requisitos necessários para a tecnologia de view são:
+
+
+    OK - Previnir erros de Encoding (UTF-8)
+    OK - Templating
+    OK - Fácil componentização
+    OK - Binding de dados
+    OK - HTML friendly
+    OK - Integração com HTML5
+    OK - Validação de dados via JSR303
+    OK - Upload ajax
+
+    6. I18N
+        ok - Labels
+        ok - Componentes
+        Enums
+        Exceptions
+        Messages
+
+
+    9. Thread Safe
+    10. Uso via post comum e ajax
+    11. Uso de cache distribuído
+    12. Uso de toda a infraestrutura de Managers como serviços locais, distribuidos e cloud (AWS)
+    14. Componentes
+    15. Build como jar e biblioteca do maven
+    16. Criar showcase com layout para sistemas empresariais
+
+    Criação de componentes
+
+    Ideias:
+        Criar um conjunto de tags baseados na construção do bootstrap para aumentar a produtividade no desenvolvimento do sistema.
+        Criar serviços em controlers para infraestrutura:
+            ContentController --> ContentManager
+            MenuController --> MenuManager
+            CacheManager
+            EmailManager
+
+
+    Resources
+    http://blog.springsource.org/2012/08/29/integrating-spring-mvc-with-jquery-for-validation-rules/
+    http://en.wikipedia.org/wiki/Progressive_enhancement
+    http://www.mkyong.com/spring-mvc/spring-3-mvc-and-jsr303-valid-example/
+    http://www.openscope.net/2010/02/08/spring-mvc-3-0-and-jsr-303-aka-javax-validation/
+    http://codetutr.com/2013/05/28/spring-mvc-form-validation/
+    http://stackoverflow.com/questions/2513863/jsr-303-bean-validation-javascript-client-side-validation
+    http://blog.springsource.org/2012/08/29/integrating-spring-mvc-with-jquery-for-validation-rules/
+    http://blog.springsource.org/2012/10/30/spring-mvc-from-jsp-and-tiles-to-thymeleaf/
+    http://blog.springsource.org/2013/03/26/bringing-new-life-to-spring-travel-with-thymeleaf/
+    http://blog.springsource.org/2009/11/17/spring-3-type-conversion-and-validation/
+    http://stackoverflow.com/questions/9679332/jsr-303-is-it-possible-to-validate-whole-graph-automatically
+    http://tapestry.apache.org/bean-validation.html
+    http://msdn.microsoft.com/en-us/library/ff649690.aspx
+    http://en.wikipedia.org/wiki/Internet_media_type
+    http://en.wikipedia.org/wiki/Content_negotiation
+    http://norrisshelton.wordpress.com/2012/07/15/spring-3-mvc-with-json-via-jackson-2-0/
+    http://en.wikipedia.org/wiki/Progressive_enhancement
+    http://thespringthing.blogspot.com.br/2010/11/how-does-modelattribute-work.html
+    http://java.dzone.com/articles/content-negotiation-using
+    http://www.youtube.com/watch?v=SC0FPuDKei0
+    http://www.youtube.com/watch?v=wylViAqNiRA
+    http://www.youtube.com/watch?v=k32KqrckLEE
+    http://www.youtube.com/watch?v=ncvsqYBLeq8
+    http://www.youtube.com/watch?v=8uBcpsIEz2I
+    http://www.youtube.com/watch?v=wZHU-U9WzNc
+    http://www.bkumar.co.uk/2012/06/26/domain-entity-converter-in-spring-mvc-application/
+    http://stackoverflow.com/questions/138948/how-to-get-utf-8-working-in-java-webapps
+
+    I18N
+    http://vmustafayev4en.blogspot.com.br/2012/09/spring-3-mvc-internationalization.html
+    http://www.mkyong.com/spring-mvc/spring-mvc-internationalization-example/
+
+    Doctype
+    http://www.w3schools.com/tags/tag_doctype.asp
+
+    CDNS
+    http://encosia.com/3-reasons-why-you-should-let-google-host-jquery-for-you/
+
+    JSP Templating
+    http://stackoverflow.com/questions/1296235/jsp-tricks-to-make-templating-easier
+
+    File Upload
+    http://viralpatel.net/blogs/spring-mvc-multiple-file-upload-example/
+    https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
+    http://krams915.blogspot.com.br/2012/06/file-upload-with-spring-and-jquery-part_2793.html
+
+    Updating multiple rows with spring
+    http://viralpatel.net/blogs/spring-mvc-multi-row-submit-java-list/
+
+    Grid
+    http://dandelion.github.io/datatables/
+
+    jQuery Mask Input
+    https://github.com/RobinHerbots/jquery.inputmask
+
+    jQuery AutoComplete
+    https://github.com/devbridge/jQuery-Autocomplete
+
+
+    http://developer.yahoo.com/performance/rules.html
+    http://www.1stwebdesigner.com/design/load-javascript-faster/

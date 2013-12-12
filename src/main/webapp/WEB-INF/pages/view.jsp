@@ -6,7 +6,7 @@
 <t:template>
    <div class="well">
       <h1>Componentes Visuais</h1>
-      <p>Os componentes visuais da arquitetura CBSA são baseados em puro HTML, CSS e Javascript.
+      <p>Os componentes visuais da arquitetura CSA são baseados em puro HTML, CSS e Javascript.
          Esses componentes são formados por vários frameworks e plugins Javascript utilizados
          conforme descritos abaixo.</p>
       <ol>
@@ -174,33 +174,33 @@
       </f:form>
    </div>
    <script type="text/javascript">
-				function converterDadosAutoCompletar(response) {
-					return {
-						suggestions : $.map(response, function(item) {
-							return {
-								value : item.label + ' (' + item.value + ')',
-								data : item.value
-							};
-						})
-					};
-				}
-				$(document).ready(
-						function() {
-							inputNumber('#numerico');
-							inputDecimal('#decimal');
-							inputDate('#data');
-							inputMask('#mascara', '99999-999');
-							inputMoney('#monetario');
-							inputAutocomplete('#autocompletar',
-									'${root}/showcase/autocompleteufs',
-									converterDadosAutoCompletar);
-							inputImage('#file1', '#imagem', '#imgUsuario');
-							inputImage('#file2', '#imagem2', '#imgUsuario_1');
-							inputFile('#file3', '#arquivo1', '#linkArq1');
-							inputFile('#file4', '#arquivo2', '#linkArq2');
-							select('#lista');
-							select('#listaMultipla');
-						});
-			</script>
+                function converterDadosAutoCompletar(response) {
+                    return {
+                        suggestions : $.map(response, function(item) {
+                            return {
+                                value : item.label + ' (' + item.value + ')',
+                                data : item.value
+                            };
+                        })
+                    };
+                }
+                $(document).ready(
+                        function() {
+                            inputNumber('#numerico');
+                            inputDecimal('#decimal');
+                            inputDate('#data');
+                            inputMask('#mascara', '99999-999');
+                            inputMoney('#monetario');
+                            inputAutocomplete('#autocompletar',
+                                    '${root}/showcase/autocompleteufs',
+                                    converterDadosAutoCompletar);
+                            inputImage('#file1', '#imagem', '#imgUsuario');
+                            inputImage('#file2', '#imagem2', '#imgUsuario_1');
+                            inputFile('#file3', '#arquivo1', '#linkArq1');
+                            inputFile('#file4', '#arquivo2', '#linkArq2');
+                            select('#lista');
+                            select('#listaMultipla');
+                        });
+            </script>
 </t:template>
 </html>
