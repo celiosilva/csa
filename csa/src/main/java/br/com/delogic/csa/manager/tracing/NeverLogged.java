@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.util;
+package br.com.delogic.csa.manager.tracing;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

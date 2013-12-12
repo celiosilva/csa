@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.standard;
+package br.com.delogic.csa.manager.content;
 
 import java.io.File;
 import java.io.FileOutputStream;

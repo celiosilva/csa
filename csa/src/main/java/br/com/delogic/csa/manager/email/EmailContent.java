@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.util;
+package br.com.delogic.csa.manager.email;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

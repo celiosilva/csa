@@ -1,7 +1,7 @@
 package br.com.delogic.csa.manager;
 
-import br.com.delogic.csa.manager.util.EmailAddress;
-import br.com.delogic.csa.manager.util.EmailContent;
+import br.com.delogic.csa.manager.email.EmailAddress;
+import br.com.delogic.csa.manager.email.EmailContent;
 
 public interface EmailManager {
 

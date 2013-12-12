@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.standard;
+package br.com.delogic.csa.manager.email;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -19,8 +19,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import br.com.delogic.csa.manager.EmailManager;
-import br.com.delogic.csa.manager.util.EmailAddress;
-import br.com.delogic.csa.manager.util.EmailContent;
 import br.com.delogic.csa.util.Converter;
 import br.com.delogic.csa.util.Do;
 import br.com.delogic.csa.util.is;

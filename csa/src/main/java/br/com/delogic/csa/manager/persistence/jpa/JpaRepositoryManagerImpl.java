@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.standard;
+package br.com.delogic.csa.manager.persistence.jpa;
 
 import java.util.Collection;
 
@@ -7,8 +7,6 @@ import javax.persistence.PersistenceContext;
 
 import br.com.delogic.csa.manager.RepositoryManager;
 import br.com.delogic.csa.manager.persistence.With;
-import br.com.delogic.csa.manager.persistence.jpa.JpaFromImpl;
-import br.com.delogic.csa.manager.persistence.jpa.JpaSqlCommand;
 
 public class JpaRepositoryManagerImpl implements RepositoryManager {
 

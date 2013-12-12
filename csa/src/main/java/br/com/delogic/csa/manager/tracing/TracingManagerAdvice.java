@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.standard;
+package br.com.delogic.csa.manager.tracing;
 
 import java.util.List;
 
@@ -8,8 +8,6 @@ import org.springframework.aop.PointcutAdvisor;
 import org.springframework.beans.factory.InitializingBean;
 
 import br.com.delogic.csa.manager.TracingManager;
-import br.com.delogic.csa.manager.util.TracingAdvice;
-import br.com.delogic.csa.manager.util.TracingPointcut;
 
 public class TracingManagerAdvice implements TracingManager, PointcutAdvisor,
         InitializingBean {

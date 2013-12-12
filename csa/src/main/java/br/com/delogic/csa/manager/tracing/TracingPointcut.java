@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.util;
+package br.com.delogic.csa.manager.tracing;
 
 import java.lang.reflect.Method;
 import java.util.List;
