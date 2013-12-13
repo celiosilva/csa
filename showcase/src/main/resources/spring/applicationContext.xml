@@ -22,7 +22,7 @@
     <bean id="uploadManager" class="br.com.delogic.csa.manager.content.ContentManagerImpl">
         <property name="directory" value="/WEB-INF/test" />
         <property name="iterator">
-            <bean class="br.com.delogic.csa.util.TimeIterator" />
+            <bean class="br.com.delogic.csa.manager.util.TimeIterator" />
         </property>
     </bean>
     <aop:aspectj-autoproxy proxy-target-class="false" />
