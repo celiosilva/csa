@@ -1,4 +1,4 @@
-package br.com.delogic.csa.util;
+package br.com.delogic.csa.manager.util;
 
 import java.util.Iterator;
 

@@ -12,7 +12,7 @@ public class is {
      * @param obj2
      * @return
      */
-    public static final <E> boolean equal(E obj1, E obj2) {
+    public static synchronized final <E> boolean equal(E obj1, E obj2) {
         if (obj1 == null && obj2 == null) {
             return false;
         } else if ((obj1 != null && obj2 == null)
@@ -23,7 +23,7 @@ public class is {
         }
     }
 
-    public static final <E> boolean empty(E... es) {
+    public static synchronized final <E> boolean empty(E... es) {
         if (es == null) {
             return true;
         }
@@ -35,11 +35,11 @@ public class is {
         return false;
     }
 
-    public static final boolean empty(String value) {
+    public static synchronized final boolean empty(String value) {
         return value == null || value.isEmpty() || value.trim().isEmpty();
     }
 
-    public static final <E> boolean empty(Collection<E> col) {
+    public static synchronized final <E> boolean empty(Collection<E> col) {
         return col == null || col.isEmpty();
     }
 
@@ -47,7 +47,7 @@ public class is {
         return col == null || col.isEmpty();
     }
 
-    public static final <E> boolean notEmpty(E... es) {
+    public static synchronized final <E> boolean notEmpty(E... es) {
         if (es == null) {
             return false;
         }
@@ -59,19 +59,19 @@ public class is {
         return true;
     }
 
-    public static final boolean notEmpty(String value) {
+    public static synchronized final boolean notEmpty(String value) {
         return value != null && (!value.isEmpty() && !value.trim().isEmpty());
     }
 
-    public static final <E> boolean notEmpty(Collection<E> col) {
+    public static synchronized final <E> boolean notEmpty(Collection<E> col) {
         return col != null && !col.isEmpty();
     }
 
-    public static final <E> boolean notEmpty(Map<?, ?> col) {
+    public static synchronized final <E> boolean notEmpty(Map<?, ?> col) {
         return col != null && !col.isEmpty();
     }
 
-    public static final boolean number(String value) {
+    public static synchronized final boolean number(String value) {
         if (empty(value)) {
             return false;
         }

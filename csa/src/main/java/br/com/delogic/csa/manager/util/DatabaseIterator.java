@@ -1,4 +1,4 @@
-package br.com.delogic.csa.util;
+package br.com.delogic.csa.manager.util;
 
 import java.util.Iterator;
 
@@ -7,6 +7,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import br.com.delogic.csa.util.is;
 
 public class DatabaseIterator implements Iterator<Long>, InitializingBean {
 

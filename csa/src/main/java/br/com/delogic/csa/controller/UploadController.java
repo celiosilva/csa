@@ -21,29 +21,31 @@ import br.com.delogic.csa.manager.ContentManager;
 public class UploadController {
 
     @Inject
-    private ContentManager uploadManager;
+    private ContentManager contentManager;
 
     @RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT })
     @ResponseBody
     public ModelAndView upload(@RequestParam("file") MultipartFile multipartFile) {
         try {
-            String fileName = uploadManager.create(
+            String fileName = contentManager.create(
                 multipartFile.getInputStream(),
                 multipartFile.getOriginalFilename());
-            String filePath = uploadManager.get(fileName);
+
+            String filePath = contentManager.get(fileName);
+
             return new ModelAndView().addObject("files", Arrays.asList(new UploadedFile(fileName, multipartFile
-                    .getSize(), filePath, null, null, null)));
+                .getSize(), filePath, null, null, null)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public ContentManager getUploadManager() {
-        return uploadManager;
+        return contentManager;
     }
 
     public void setUploadManager(ContentManager uploadManager) {
-        this.uploadManager = uploadManager;
+        this.contentManager = uploadManager;
     }
 
 }
