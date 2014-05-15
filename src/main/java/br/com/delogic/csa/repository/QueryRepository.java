@@ -2,8 +2,6 @@ package br.com.delogic.csa.repository;
 
 import java.util.List;
 
-import br.com.delogic.csa.repository.sql.Criteria;
-
 public interface QueryRepository<E> {
 
     List<E> getList();

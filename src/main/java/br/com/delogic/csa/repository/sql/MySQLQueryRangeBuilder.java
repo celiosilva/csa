@@ -1,5 +1,7 @@
 package br.com.delogic.csa.repository.sql;
 
+import br.com.delogic.csa.repository.Criteria;
+
 
 /**
  * Will add the start row and end end row filters to the query for MySQL

@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import org.springframework.util.Assert;
 
+import br.com.delogic.csa.repository.Criteria;
 import br.com.delogic.csa.repository.sql.Query.PermittedParameterType;
 
 public class QueryTester {

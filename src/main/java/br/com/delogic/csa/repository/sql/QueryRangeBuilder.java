@@ -1,5 +1,7 @@
 package br.com.delogic.csa.repository.sql;
 
+import br.com.delogic.csa.repository.Criteria;
+
 /**
  * Implement this interface and pass it to the query so you can query the
  * database with pagination using the start row and end row.

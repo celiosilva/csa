@@ -1,4 +1,4 @@
-package br.com.delogic.csa.repository.sql;
+package br.com.delogic.csa.repository;
 
 import java.util.Arrays;
 import java.util.HashMap;

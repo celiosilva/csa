@@ -246,6 +246,13 @@
         </dependency>
         <!-- XML -->
         <!-- =============================================== -->
+
+        <dependency>
+            <groupId>br.com.delogic</groupId>
+            <artifactId>jfunk</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <distributionManagement>

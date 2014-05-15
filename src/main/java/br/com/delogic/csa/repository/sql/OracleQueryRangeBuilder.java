@@ -1,5 +1,7 @@
 package br.com.delogic.csa.repository.sql;
 
+import br.com.delogic.csa.repository.Criteria;
+
 
 /**
  * Will return the query with start row and end row for Oracle database.

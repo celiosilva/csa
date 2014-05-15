@@ -1,7 +1,6 @@
 package br.com.delogic.csa.repository.sql;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,8 +21,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.Assert;
 
+import br.com.delogic.csa.repository.Criteria;
 import br.com.delogic.csa.repository.QueryRepository;
 import br.com.delogic.csa.repository.RepositoryData;
+import br.com.delogic.jfunk.Has;
 
 /**
  * A {@code Query} represents a SQL wrapped component which allows to execute
@@ -195,7 +196,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
          * search and remove the mandatory parameters from orders statements
          * with parameters
          */
-        if (f.notEmpty(orders)) {
+        if (Has.content(orders)) {
             for (Entry<String, String> entry : orders.entrySet()) {
                 entry.setValue(removeMandatoryParamType(entry.getValue(), pattern, mandatoryParameters));
             }
@@ -237,7 +238,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
      * @return
      */
     private String removeMandatoryParamType(String statement, Pattern pattern, Map<String, PermittedParameterType> params) {
-        if (!f.hasValue(statement) || !statement.contains(":")) {
+        if (!Has.content(statement) || !statement.contains(":")) {
             return statement;
         }
         Matcher matcher = pattern.matcher(statement);
@@ -399,18 +400,18 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
      */
     String composeQuery(Criteria queryParameters) {
         StringBuilder sbQuery = new StringBuilder(SELECT_STATEMENT + select + FROM_STATEMENT + from);
-        if (f.notEmpty(where)) {
+        if (Has.content(where)) {
             sbQuery.append(WHERE_STATEMENT);
             sbQuery.append(where);
         }
 
-        Map<String, Object> params = queryParameters != null && f.notEmpty(queryParameters.getParameters()) ? queryParameters
+        Map<String, Object> params = queryParameters != null && Has.content(queryParameters.getParameters()) ? queryParameters
             .getParameters()
-                                                                                                           : null;
+                                                                                                            : null;
 
-        if (f.notEmpty(and) && f.notEmpty(params)) {
+        if (Has.content(and) && Has.content(params)) {
 
-            sbQuery.append(f.isEmpty(where) ? WHERE_STATEMENT : AND_OPERATOR);
+            sbQuery.append(!Has.content(where) ? WHERE_STATEMENT : AND_OPERATOR);
 
             for (Iterator<String> it =
                 params.keySet().iterator(); it.hasNext();) {
@@ -433,21 +434,21 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
             }
             sbQuery = new StringBuilder(q);
         }
-        if (f.notEmpty(groupBy)) {
+        if (Has.content(groupBy)) {
             sbQuery.append(GROUP_STATEMENT).append(groupBy);
         }
 
-        if (queryParameters == null || (f.isEmpty(queryParameters.getOrderByKey()) && f.isEmpty(orders))) {
-            if (f.notEmpty(orderBy)) {
+        if (queryParameters == null || (!Has.content(queryParameters.getOrderByKey()) && !Has.content(orders))) {
+            if (Has.content(orderBy)) {
                 sbQuery.append(ORDER_STATEMENT).append(orderBy);
             }
-        } else if (queryParameters != null && f.notEmpty(queryParameters.getOrderByKey()) && f.notEmpty(orders)) {
+        } else if (queryParameters != null && Has.content(queryParameters.getOrderByKey()) && Has.content(orders)) {
             String orderStatement = "";
             for (String orderByKey : queryParameters.getOrderByKey()) {
-                orderStatement += orders.containsKey(orderByKey) ? (f.isEmpty(orderStatement) ? "" : ",")
+                orderStatement += orders.containsKey(orderByKey) ? (!Has.content(orderStatement) ? "" : ",")
                     + orders.get(orderByKey) : "";
             }
-            if (f.notEmpty(orderStatement)) {
+            if (Has.content(orderStatement)) {
                 sbQuery.append(ORDER_STATEMENT + orderStatement);
             }
         }
@@ -467,18 +468,18 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
     String composeCount(Criteria queryParameters) {
         StringBuilder sbQuery = new StringBuilder(SELECT_COUNT_STATEMENT + FROM_STATEMENT + "(" + SELECT_STATEMENT + select
             + FROM_STATEMENT + from);
-        if (f.notEmpty(where)) {
+        if (Has.content(where)) {
             sbQuery.append(WHERE_STATEMENT);
             sbQuery.append(where);
         }
 
-        Map<String, Object> params = queryParameters != null && f.notEmpty(queryParameters.getParameters()) ? queryParameters
+        Map<String, Object> params = queryParameters != null && Has.content(queryParameters.getParameters()) ? queryParameters
             .getParameters()
-                                                                                                           : null;
+                                                                                                            : null;
 
-        if (f.notEmpty(and) && f.notEmpty(params)) {
+        if (Has.content(and) && Has.content(params)) {
 
-            sbQuery.append(f.isEmpty(where) ? WHERE_STATEMENT : AND_OPERATOR);
+            sbQuery.append(!Has.content(where) ? WHERE_STATEMENT : AND_OPERATOR);
 
             for (Iterator<String> it =
                 params.keySet().iterator(); it.hasNext();) {
@@ -501,7 +502,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
             }
             sbQuery = new StringBuilder(q);
         }
-        if (f.notEmpty(groupBy)) {
+        if (Has.content(groupBy)) {
             sbQuery.append(GROUP_STATEMENT).append(groupBy);
         }
 
@@ -805,82 +806,6 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
 
     public RepositoryData<T> getData(Criteria criteria) {
         return new RepositoryData<T>(count(criteria), getList(criteria));
-    }
-
-}
-
-/**
- * Utilities class
- *
- * @author celio@delogic.com.br
- *
- */
-class f {
-
-    /**
-     * If both objects are null it'll return false
-     *
-     * @param obj1
-     * @param obj2
-     * @return
-     */
-    public static final <E> boolean equals(E obj1, E obj2) {
-        if (obj1 == null && obj2 == null) {
-            return false;
-        } else if ((obj1 != null && obj2 == null)
-            || (obj1 == null && obj2 != null)) {
-            return false;
-        } else {
-            return obj1.equals(obj2);
-        }
-    }
-
-    public static final <E> boolean notEmpty(E... es) {
-        if (es == null) {
-            return false;
-        }
-        for (E e : es) {
-            if (e == null || String.valueOf(e).isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static final <E> boolean isEmpty(E... es) {
-        if (es == null) {
-            return true;
-        }
-        for (E e : es) {
-            if (e == null || e.toString().isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static final boolean hasValue(String value) {
-        return value != null && (!value.isEmpty() && !value.trim().isEmpty());
-    }
-
-    public static final boolean isEmpty(String value) {
-        return value == null || value.isEmpty() || value.trim().isEmpty();
-    }
-
-    public static final <E> boolean notEmpty(Collection<E> col) {
-        return col != null && !col.isEmpty();
-    }
-
-    public static final <E> boolean notEmpty(Map<?, ?> col) {
-        return col != null && !col.isEmpty();
-    }
-
-    public static final <E> boolean isEmpty(Collection<E> col) {
-        return col == null || col.isEmpty();
-    }
-
-    public static final <E> boolean isEmpty(Map<?, ?> col) {
-        return col == null || col.isEmpty();
     }
 
 }
