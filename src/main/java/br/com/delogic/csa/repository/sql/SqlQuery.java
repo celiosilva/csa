@@ -81,7 +81,7 @@ import br.com.delogic.jfunk.Has;
  * @param <T>
  * - Type of the returnType parameter required.
  */
-public class Query<T> implements InitializingBean, QueryRepository<T> {
+public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
 
     /**
      * Querie's select statement without the "select" reserved word
@@ -129,7 +129,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
     /*
      * Internal control of parameter types
      */
-    private Map<String, PermittedParameterType> registeredParameters   = new HashMap<String, Query.PermittedParameterType>();
+    private Map<String, PermittedParameterType> registeredParameters   = new HashMap<String, SqlQuery.PermittedParameterType>();
 
     /*
      * Internal control of p
@@ -148,7 +148,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
     private RowMapper<T>                        rowMapper;
 
     @Inject
-    private QueryRangeBuilder                   rangeBuilder;
+    private SqlQueryRangeBuilder                rangeBuilder;
 
     @Inject
     private DataSource                          dataSource;
@@ -158,7 +158,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
     /**
      * Logger using slf4j facade
      */
-    private static final Logger                 logger                 = LoggerFactory.getLogger(Query.class);
+    private static final Logger                 logger                 = LoggerFactory.getLogger(SqlQuery.class);
 
     /**
      * Will initialize the {@code Query} object using the required statements:
@@ -181,7 +181,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
 
         template = new NamedParameterJdbcTemplate(dataSource);
 
-        mandatoryParameters = new HashMap<String, Query.PermittedParameterType>();
+        mandatoryParameters = new HashMap<String, SqlQuery.PermittedParameterType>();
 
         /*
          * search and remove the mandatory parameters from mandatory statements
@@ -684,6 +684,24 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
     }
 
     /**
+     * Sets the return type for this query result
+     *
+     * @param type
+     */
+    public void setInto(Class<T> type) {
+        this.returnType = type;
+    }
+
+    /**
+     * Gets the return type for this query result
+     *
+     * @return
+     */
+    public Class<T> getInto() {
+        return returnType;
+    }
+
+    /**
      * Gets the datasource
      *
      * @return
@@ -724,7 +742,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
      *
      * @return
      */
-    public QueryRangeBuilder getRangeBuilder() {
+    public SqlQueryRangeBuilder getRangeBuilder() {
         return rangeBuilder;
     }
 
@@ -733,7 +751,7 @@ public class Query<T> implements InitializingBean, QueryRepository<T> {
      *
      * @param rangeBuilder
      */
-    public void setRangeBuilder(QueryRangeBuilder rangeBuilder) {
+    public void setRangeBuilder(SqlQueryRangeBuilder rangeBuilder) {
         this.rangeBuilder = rangeBuilder;
     }
 

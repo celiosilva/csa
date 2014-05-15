@@ -10,7 +10,7 @@ import br.com.delogic.csa.repository.Criteria;
  * @author celio@delogic.com.br
  *
  */
-public class MySQLQueryRangeBuilder implements QueryRangeBuilder {
+public class MySQLSqlQueryRangeBuilder implements SqlQueryRangeBuilder {
 
     public String buildRangeQuery(String query, Criteria configuration) {
         long startRow = configuration.getStartRow() != null ? configuration.getStartRow() : 0;

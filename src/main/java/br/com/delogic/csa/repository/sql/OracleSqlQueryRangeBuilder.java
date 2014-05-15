@@ -9,7 +9,7 @@ import br.com.delogic.csa.repository.Criteria;
  * @author celio@delogic.com.br
  *
  */
-public class OracleQueryRangeBuilder implements QueryRangeBuilder {
+public class OracleSqlQueryRangeBuilder implements SqlQueryRangeBuilder {
 
     private static final String RANGE_QUERY =
                                                 "SELECT * " +

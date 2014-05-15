@@ -9,7 +9,7 @@ import br.com.delogic.csa.repository.Criteria;
  * @author celio@delogic.com.br
  *
  */
-public interface QueryRangeBuilder {
+public interface SqlQueryRangeBuilder {
 
     /**
      * Will receive the query composed, ready for execution and the parameters

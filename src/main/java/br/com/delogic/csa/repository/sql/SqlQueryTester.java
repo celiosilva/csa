@@ -6,16 +6,17 @@ import java.util.Map.Entry;
 import org.springframework.util.Assert;
 
 import br.com.delogic.csa.repository.Criteria;
-import br.com.delogic.csa.repository.sql.Query.PermittedParameterType;
+import br.com.delogic.csa.repository.sql.SqlQuery.PermittedParameterType;
+import br.com.delogic.jfunk.Has;
 
-public class QueryTester {
+public class SqlQueryTester {
 
     @SuppressWarnings("rawtypes")
-    public void testAllQueries(Map<String, Query> beans) {
+    public void testAllQueries(Map<String, SqlQuery> beans) {
         Assert.isTrue(!beans.isEmpty());
 
-        for (Entry<String, Query> entry : beans.entrySet()) {
-            Query<?> q = entry.getValue();
+        for (Entry<String, SqlQuery> entry : beans.entrySet()) {
+            SqlQuery<?> q = entry.getValue();
             Criteria config = new Criteria();
             if (q.getMandatoryParameters() != null) {
                 for (Entry<String, PermittedParameterType> mp : q.getMandatoryParameters().entrySet()) {
@@ -27,7 +28,7 @@ public class QueryTester {
             System.out.println("Running get Count complete");
             Assert.isTrue(size == q.count(config), "Incorrect result for query:" + entry.getKey());
 
-            if (f.notEmpty(q.getRegisteredParameters())) {
+            if (Has.content(q.getRegisteredParameters())) {
                 for (Entry<String, PermittedParameterType> pentry : q.getRegisteredParameters().entrySet()) {
 
                     System.out.println(entry.getKey() + ":Running get List with individual parameter:" + pentry.getKey());
@@ -45,7 +46,7 @@ public class QueryTester {
                     config.addParameter(pentry.getKey(), pentry.getValue().getExample());
                 }
             }
-            if (f.notEmpty(q.getOrders())) {
+            if (Has.content(q.getOrders())) {
                 config.setOrderByKey(q.getOrders().keySet().toArray(new String[q.getOrders().size()]));
             }
             System.out.println("Running get List with parameters");
