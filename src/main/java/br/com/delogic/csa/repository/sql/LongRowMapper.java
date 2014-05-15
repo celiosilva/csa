@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import br.com.delogic.jfunk.Has;
+
 /**
  * Row mapper created to return lists of Long values.
  *
@@ -16,7 +18,12 @@ public class LongRowMapper<E> implements RowMapper<E> {
 
     @SuppressWarnings("unchecked")
     public E mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return (E) Long.valueOf(rs.getLong(1));
+        String value = rs.getString(1);
+        if (Has.content(value)) {
+            return (E) Long.valueOf(value);
+        } else {
+            return null;
+        }
     }
 
 }
