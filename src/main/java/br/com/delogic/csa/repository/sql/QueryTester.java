@@ -1,11 +1,11 @@
-package br.com.delogic.csa.manager.repository.sql;
+package br.com.delogic.csa.repository.sql;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.util.Assert;
 
-import br.com.delogic.csa.manager.repository.sql.Query.PermittedParameterType;
+import br.com.delogic.csa.repository.sql.Query.PermittedParameterType;
 
 public class QueryTester {
 
@@ -24,7 +24,7 @@ public class QueryTester {
             System.out.println("Running get List complete");
             int size = q.getList(config).size();
             System.out.println("Running get Count complete");
-            Assert.isTrue(size == q.getCount(config), "Incorrect result for query:" + entry.getKey());
+            Assert.isTrue(size == q.count(config), "Incorrect result for query:" + entry.getKey());
 
             if (f.notEmpty(q.getRegisteredParameters())) {
                 for (Entry<String, PermittedParameterType> pentry : q.getRegisteredParameters().entrySet()) {
@@ -50,7 +50,7 @@ public class QueryTester {
             System.out.println("Running get List with parameters");
             int psize = q.getList(config).size();
             System.out.println("Running get Count with parameters");
-            Assert.isTrue(psize == q.getCount(config), "Incorrect result for query:" + entry.getKey());
+            Assert.isTrue(psize == q.count(config), "Incorrect result for query:" + entry.getKey());
 
             config.setStartRow(1L);
             config.setEndRow(2L);

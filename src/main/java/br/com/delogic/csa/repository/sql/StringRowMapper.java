@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.repository.sql;
+package br.com.delogic.csa.repository.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

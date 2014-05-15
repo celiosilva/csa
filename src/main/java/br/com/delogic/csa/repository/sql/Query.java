@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.repository.sql;
+package br.com.delogic.csa.repository.sql;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,6 +21,9 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.Assert;
+
+import br.com.delogic.csa.repository.QueryRepository;
+import br.com.delogic.csa.repository.RepositoryData;
 
 /**
  * A {@code Query} represents a SQL wrapped component which allows to execute
@@ -77,7 +80,7 @@ import org.springframework.util.Assert;
  * @param <T>
  * - Type of the returnType parameter required.
  */
-public class Query<T> implements InitializingBean {
+public class Query<T> implements InitializingBean, QueryRepository<T> {
 
     /**
      * Querie's select statement without the "select" reserved word
@@ -354,7 +357,7 @@ public class Query<T> implements InitializingBean {
      *            parameters configured in the query
      * @return Number of rows found on database
      */
-    public long getCount(Criteria queryParameters) {
+    public long count(Criteria queryParameters) {
 
         Map<String, Object> params = queryParameters != null && queryParameters.getParameters() != null ? queryParameters.getParameters()
                                                                                                        : new HashMap<String, Object>();
@@ -380,8 +383,8 @@ public class Query<T> implements InitializingBean {
      *
      * @return Number of rows found on database
      */
-    public long getCount() {
-        return getCount(null);
+    public long count() {
+        return count(null);
     }
 
     /**
@@ -794,6 +797,14 @@ public class Query<T> implements InitializingBean {
      */
     public void afterPropertiesSet() throws Exception {
         maybeInitializeQuery();
+    }
+
+    public RepositoryData<T> getData() {
+        return new RepositoryData<T>(count(), getList());
+    }
+
+    public RepositoryData<T> getData(Criteria criteria) {
+        return new RepositoryData<T>(count(criteria), getList(criteria));
     }
 
 }

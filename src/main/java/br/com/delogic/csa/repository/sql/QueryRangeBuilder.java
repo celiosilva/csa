@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.repository.sql;
+package br.com.delogic.csa.repository.sql;
 
 /**
  * Implement this interface and pass it to the query so you can query the
