@@ -1,6 +1,7 @@
 package br.com.delogic.csa.repository.sql;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -112,13 +113,13 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * List of possible "and" statements which will be appended according to the
      * parameters sent
      */
-    private Map<String, String>                 and;
+    private Map<String, String>                 parameterizedAnd;
 
     /**
      * List of possible "order by" statements which will be appened according to
      * the parameters sent
      */
-    private Map<String, String>                 orders;
+    private Map<String, String>                 parameterizedOrderBy;
 
     /**
      * This Query return type. Will be used to map the {@code ResultSet} vlaues
@@ -192,15 +193,6 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         orderBy = removeMandatoryParamType(orderBy, pattern, mandatoryParameters);
         groupBy = removeMandatoryParamType(groupBy, pattern, mandatoryParameters);
 
-        /*
-         * search and remove the mandatory parameters from orders statements
-         * with parameters
-         */
-        if (Has.content(orders)) {
-            for (Entry<String, String> entry : orders.entrySet()) {
-                entry.setValue(removeMandatoryParamType(entry.getValue(), pattern, mandatoryParameters));
-            }
-        }
         if (logger.isDebugEnabled()) {
             logger.debug("Mandatory parameters:" + mandatoryParameters);
         }
@@ -255,40 +247,48 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * Returns a list of data from the database, already mapped to the
      * appropriate object(s). It may take a queryParameters parameter or null.
      *
-     * @param queryParameters
+     * @param criteria
      *            - a map of parameters which will be added according to the
      *            parameters configured in the query
      * @return List of desired database values mapped into objects
      */
-    public List<T> getList(Criteria queryParameters) {
+    public List<T> getList(Criteria criteria) {
         maybeInitializeQuery();
-        if (returnType == null) {
-            throw new IllegalStateException("returnType cannot be null when getting a list with type mapping");
-        }
-        Map<String, Object> params = queryParameters != null && queryParameters.getParameters() != null ? queryParameters.getParameters()
-                                                                                                       : new HashMap<String, Object>();
-        String composedQuery = composeQuery(queryParameters);
 
-        if (queryParameters != null && (queryParameters.getStartRow() != null || queryParameters.getEndRow() != null)) {
-            composedQuery = rangeBuilder.buildRangeQuery(composedQuery, queryParameters);
+        Map<String, Object> params = extractParams(criteria);
+        String composedQuery = composeQuery(criteria, params);
+
+        if (criteria != null) {
+            composedQuery = rangeBuilder.buildRangeQuery(composedQuery, criteria);
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Executing query:" + composedQuery.replaceAll("\\s+", " "));
-            logger.debug("With parameters:"
-                + (queryParameters != null && queryParameters.getParameters() != null ? queryParameters.getParameters() : ""));
-        }
+        maybeLogQuery(composedQuery, params);
 
-        List<T> data = null;
+        List<T> data = template.query(composedQuery, params, rowMapper);
 
-        data = template.query(composedQuery, params, rowMapper);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(data.size() + " itens found");
-        }
+        maybeLogQueryReturn(data);
 
         return data;
 
+    }
+
+    private void maybeLogQueryReturn(List<T> data) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(data.size() + " itens found");
+        }
+    }
+
+    private void maybeLogQuery(String composedQuery, Map<String, Object> params) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Executing query:" + composedQuery.replaceAll("\\s+", " "));
+            logger.debug("With parameters:" + params);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> extractParams(Criteria criteria) {
+        return (Map<String, Object>) (criteria == null || criteria.getParameters() == null ? Collections.emptyMap() : criteria
+            .getParameters());
     }
 
     /**
@@ -306,74 +306,62 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * and other configurations. This is useful when querying for objects by id
      * which only the first item is relevant and will be returned.
      *
-     * @param queryParameters
+     * @param criteria
      *            - a map of parameters which will be added according to the
      *            parameters configured in the query
      * @return T The first item POJO mapped found
      */
-    public T getFirst(Criteria queryParameters) {
-        if (returnType == null) {
-            throw new IllegalStateException("returnType cannot be null when getting a result with type mapping");
-        }
-        Map<String, Object> params = queryParameters != null && queryParameters.getParameters() != null ? queryParameters.getParameters()
+    public T getFirst(Criteria criteria) {
+        maybeInitializeQuery();
 
-                                                                                                       : new HashMap<String, Object>();
+        Map<String, Object> params = extractParams(criteria);
+
+        if (criteria == null) {
+            criteria = new Criteria();
+        }
         // getting only the first result
-        queryParameters.setStartRow(0L);
-        queryParameters.setEndRow(1L);
+        criteria.setLimit(1L);
 
-        String composedQuery = composeQuery(queryParameters);
+        String composedQuery = composeQuery(criteria, params);
 
-        if (queryParameters != null && (queryParameters.getStartRow() != null || queryParameters.getEndRow() != null)) {
-            composedQuery = rangeBuilder.buildRangeQuery(composedQuery, queryParameters);
-        }
+        composedQuery = rangeBuilder.buildRangeQuery(composedQuery, criteria);
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Executing query:" + composedQuery.replaceAll("\\s+", " "));
-            logger.debug("With parameters:"
-                + (queryParameters != null && queryParameters.getParameters() != null ? queryParameters.getParameters() : ""));
-        }
+        maybeLogQuery(composedQuery, params);
 
-        List<T> data = null;
+        List<T> data = template.query(composedQuery, params, rowMapper);
 
-        data = template.query(composedQuery, params, rowMapper);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug(data.size() + " itens found");
-        }
+        maybeLogQueryReturn(data);
 
         if (data.isEmpty()) {
             return null;
+        } else {
+            return data.get(0);
         }
-
-        return data.get(0);
 
     }
 
     /**
      * Returns the amount of items found on database given the parameters.
      *
-     * @param queryParameters
+     * @param criteria
      *            - a map of parameters which will be added according to the
      *            parameters configured in the query
      * @return Number of rows found on database
      */
-    public long count(Criteria queryParameters) {
+    public long count(Criteria criteria) {
 
-        Map<String, Object> params = queryParameters != null && queryParameters.getParameters() != null ? queryParameters.getParameters()
-                                                                                                       : new HashMap<String, Object>();
-        String composedQuery = composeCount(queryParameters);
+        maybeInitializeQuery();
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Executando consulta:" + composedQuery.replaceAll("\\s+", " "));
-            logger.debug("Com parametros:"
-                + (queryParameters != null && queryParameters.getParameters() != null ? queryParameters.getParameters() : ""));
-        }
+        Map<String, Object> params = extractParams(criteria);
+
+        String composedQuery = composeCount(criteria);
+
+        maybeLogQuery(composedQuery, params);
 
         long count = template.queryForLong(composedQuery, params);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Total de itens encontrados:" + count);
+            logger.debug("Itens found:" + count);
         }
 
         return count;
@@ -385,7 +373,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * @return Number of rows found on database
      */
     public long count() {
-        return count(null);
+        return count(new Criteria());
     }
 
     /**
@@ -393,66 +381,64 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      * statements, orders and group by statements into a single query to be
      * executed against the database to return the data values.
      *
-     * @param queryParameters
+     * @param criteria
      *            - a map of parameters which will be added according to the
      *            parameters configured in the query
      * @return String with the query composed and ready for execution
      */
-    String composeQuery(Criteria queryParameters) {
-        StringBuilder sbQuery = new StringBuilder(SELECT_STATEMENT + select + FROM_STATEMENT + from);
+    String composeQuery(Criteria criteria, Map<String, Object> params) {
+        StringBuilder query = new StringBuilder(SELECT_STATEMENT).append(select);
+
+        if (Has.content(from)) {
+            query.append(FROM_STATEMENT).append(from);
+        }
+
+        boolean whereAppended = false;
         if (Has.content(where)) {
-            sbQuery.append(WHERE_STATEMENT);
-            sbQuery.append(where);
+            query.append(WHERE_STATEMENT).append(where);
+            whereAppended = true;
         }
 
-        Map<String, Object> params = queryParameters != null && Has.content(queryParameters.getParameters()) ? queryParameters
-            .getParameters()
-                                                                                                            : null;
-
-        if (Has.content(and) && Has.content(params)) {
-
-            sbQuery.append(!Has.content(where) ? WHERE_STATEMENT : AND_OPERATOR);
-
-            for (Iterator<String> it =
-                params.keySet().iterator(); it.hasNext();) {
-                String key = it.next();
-                if (!and.containsKey(key)) continue;
-
-                sbQuery.append(and.get(key));
-
-                if (it.hasNext()) sbQuery.append(AND_OPERATOR);
+        if (Has.content(parameterizedAnd) && Has.content(params)) {
+            for (String paramKey : params.keySet()) {
+                if (parameterizedAnd.containsKey(paramKey)) {
+                    query.append(whereAppended ? AND_OPERATOR : WHERE_STATEMENT).append(parameterizedAnd.get(paramKey));
+                    whereAppended = true;
+                }
             }
-            // if the query ends with where or and statements we need to remove
-            // them.
-            String q = sbQuery.toString();
-            if (q.endsWith(WHERE_STATEMENT)) {
-                q = q + "tbr";
-                q = q.replace(WHERE_STATEMENT + "tbr", "");
-            } else if (q.endsWith(AND_OPERATOR)) {
-                q = q + "tbr";
-                q = q.replace(AND_OPERATOR + "tbr", "");
-            }
-            sbQuery = new StringBuilder(q);
         }
+
         if (Has.content(groupBy)) {
-            sbQuery.append(GROUP_STATEMENT).append(groupBy);
+            query.append(GROUP_STATEMENT).append(groupBy);
         }
 
-        if (queryParameters == null || (!Has.content(queryParameters.getOrderByKey()) && !Has.content(orders))) {
-            if (Has.content(orderBy)) {
-                sbQuery.append(ORDER_STATEMENT).append(orderBy);
-            }
-        } else if (queryParameters != null && Has.content(queryParameters.getOrderByKey()) && Has.content(orders)) {
-            String orderStatement = "";
-            for (String orderByKey : queryParameters.getOrderByKey()) {
-                orderStatement += orders.containsKey(orderByKey) ? (!Has.content(orderStatement) ? "" : ",")
-                    + orders.get(orderByKey) : "";
-            }
-            if (Has.content(orderStatement)) {
-                sbQuery.append(ORDER_STATEMENT + orderStatement);
+        boolean orderByAppended = false;
+        //append more reliable order by statements
+        if (criteria != null && Has.content(criteria.getParameterizedOrderBy())) {
+            for (String orderByKey : criteria.getParameterizedOrderBy()) {
+                if (parameterizedOrderBy.containsKey(orderByKey)) {
+                    String orderStmt = parameterizedOrderBy.get(orderByKey);
+                    query.append(orderByAppended ? ", " : ORDER_STATEMENT).append(orderStmt);
+                    orderByAppended = true;
+                }
             }
         }
-        return sbQuery.toString();
+
+        //append order by coming from the criteria
+        if (criteria != null && Has.content(criteria.getOrderBy())) {
+            for (String orderStmt : criteria.getOrderBy()) {
+                query.append(orderByAppended ? ", " : ORDER_STATEMENT).append(orderStmt);
+                orderByAppended = true;
+            }
+        }
+
+        //append configured order by statements
+        if (Has.content(orderBy)) {
+            query.append(orderByAppended ? ", " : ORDER_STATEMENT).append(orderBy);
+            orderByAppended = true;
+        }
+
+        return query.toString();
     }
 
     /**
@@ -477,16 +463,16 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
             .getParameters()
                                                                                                             : null;
 
-        if (Has.content(and) && Has.content(params)) {
+        if (Has.content(parameterizedAnd) && Has.content(params)) {
 
             sbQuery.append(!Has.content(where) ? WHERE_STATEMENT : AND_OPERATOR);
 
             for (Iterator<String> it =
                 params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
-                if (!and.containsKey(key)) continue;
+                if (!parameterizedAnd.containsKey(key)) continue;
 
-                sbQuery.append(and.get(key));
+                sbQuery.append(parameterizedAnd.get(key));
 
                 if (it.hasNext()) sbQuery.append(AND_OPERATOR);
             }
@@ -540,8 +526,8 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *
      * @return Map with all the statements
      */
-    public Map<String, String> getAnd() {
-        return and;
+    public Map<String, String> getParameterizedAnd() {
+        return parameterizedAnd;
     }
 
     /**
@@ -549,29 +535,29 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *
      * @param andParam
      */
-    public void setAnd(Map<String, String> andParam) {
-        if (and == null) {
-            and = new HashMap<String, String>();
-        }
-
+    public void setParameterizedAnd(Map<String, String> andParam) {
+        parameterizedAnd = new HashMap<String, String>();
         for (Entry<String, String> entry : andParam.entrySet()) {
-            String[] keyType = entry.getKey().split(":");
-            if (keyType.length <= 1) {
-                throw new IllegalArgumentException(
-                    "You should provide the key parameter name with a colon and the data type, " +
-                        "like myparam:number. Permitted types are:"
-                        + PermittedParameterType.stringValues());
+            if (entry.getValue().contains(":")) {
+                String[] keyType = entry.getKey().split(":");
+                if (keyType.length <= 1) {
+                    throw new IllegalArgumentException(
+                        "You should provide the key parameter name with a colon and the data type, " +
+                            "like myparam:number. Permitted types are:"
+                            + PermittedParameterType.stringValues());
+                }
+                PermittedParameterType type = PermittedParameterType.valueOf(keyType[1]);
+                if (!Has.content(type)) {
+                    throw new IllegalArgumentException(
+                        "You should provide the key parameter name with a colon and the data type, " +
+                            "like myparam:number. Permitted types are:"
+                            + PermittedParameterType.stringValues());
+                }
+                parameterizedAnd.put(keyType[0], entry.getValue());
+                registeredParameters.put(keyType[0], type);
+            } else {
+                parameterizedAnd.put(entry.getKey(), entry.getValue());
             }
-            PermittedParameterType type = PermittedParameterType.valueOf(keyType[1]);
-            if (type == null) {
-                throw new IllegalArgumentException(
-                    "You should provide the key parameter name with a colon and the data type, " +
-                        "like myparam:number. Permitted types are:"
-                        + PermittedParameterType.stringValues());
-            }
-
-            and.put(keyType[0], entry.getValue());
-            registeredParameters.put(keyType[0], type);
         }
     }
 
@@ -720,21 +706,46 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     }
 
     /**
-     * Gets the dynamic orders statements
+     * Gets the parameterized orders statements
      *
      * @return
      */
-    public Map<String, String> getOrders() {
-        return orders;
+    public Map<String, String> getParameterizedOrderBy() {
+        return parameterizedOrderBy;
     }
 
     /**
-     * Sets the dynamic orders statements
+     * Sets the parameterized orders statements
      *
      * @param multiOrderBy
      */
-    public void setOrders(Map<String, String> multiOrderBy) {
-        this.orders = multiOrderBy;
+    public void setParameterizedOrderBy(Map<String, String> multiOrderBy) {
+        parameterizedOrderBy = new HashMap<String, String>();
+
+        for (Entry<String, String> entry : multiOrderBy.entrySet()) {
+            // if the values contains semicolons means there's a parameter
+            if (entry.getValue().contains(":")) {
+                String[] keyType = entry.getKey().split(":");
+                if (keyType.length <= 1) {
+                    throw new IllegalArgumentException(
+                        "You should provide the key parameter name with a colon and the data type, " +
+                            "like myparam:number. Permitted types are:"
+                            + PermittedParameterType.stringValues());
+                }
+                PermittedParameterType type = PermittedParameterType.valueOf(keyType[1]);
+                if (!Has.content(type)) {
+                    throw new IllegalArgumentException(
+                        "You should provide the key parameter name with a colon and the data type, " +
+                            "like myparam:number. Permitted types are:"
+                            + PermittedParameterType.stringValues());
+                }
+                parameterizedOrderBy.put(keyType[0], entry.getValue());
+                registeredParameters.put(keyType[0], type);
+            } else {
+                parameterizedOrderBy.put(entry.getKey(), entry.getValue());
+            }
+        }
+
     }
 
     /**

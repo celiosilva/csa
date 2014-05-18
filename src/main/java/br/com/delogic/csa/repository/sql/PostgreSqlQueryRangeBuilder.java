@@ -1,15 +1,17 @@
 package br.com.delogic.csa.repository.sql;
 
 import br.com.delogic.csa.repository.Criteria;
+import br.com.delogic.jfunk.Has;
 
 public class PostgreSqlQueryRangeBuilder implements SqlQueryRangeBuilder {
 
-    public String buildRangeQuery(String query, Criteria configuration) {
+    public String buildRangeQuery(String query, Criteria criteria) {
 
-        long startRow = configuration.getStartRow() != null ? configuration.getStartRow() : 0;
-        long endRow = configuration.getEndRow() != null ? configuration.getEndRow() : Long.MAX_VALUE;
-
-        query += (" Limit " + endRow + " offset " + startRow);
+        if (Has.content(criteria.getOffset(), criteria.getLimit())) {
+            long offset = criteria.getOffset() != null ? criteria.getOffset() : 0;
+            long limit = criteria.getLimit() != null ? criteria.getLimit() : Long.MAX_VALUE;
+            query += (" Limit " + limit + " offset " + offset);
+        }
 
         return query;
     }

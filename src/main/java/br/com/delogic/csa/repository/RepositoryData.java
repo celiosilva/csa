@@ -4,19 +4,19 @@ import java.util.List;
 
 public class RepositoryData<E> {
 
-    private final Long    size;
-    private final List<E> data;
+    private final long              size;
+    private final List<? extends E> data;
 
-    public RepositoryData(Long size, List<E> data) {
+    public RepositoryData(long size, List<? extends E> data) {
         this.size = size;
         this.data = data;
     }
 
-    public Long getSize() {
+    public long getSize() {
         return size;
     }
 
-    public List<E> getData() {
+    public List<? extends E> getData() {
         return data;
     }
 

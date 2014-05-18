@@ -7,9 +7,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.delogic.jfunk.Has;
+
 /**
- * Parameters which can be sent into the query's {@code getList} method,
- * filtering the query via dynamic and statements append.
+ * Parameters which can be used with a {@code QueryRepository} get methods,
+ * filtering the query via statements to be appended.
  *
  * @author celio@delogic.com.br
  *
@@ -17,19 +19,24 @@ import org.slf4j.LoggerFactory;
 public class Criteria {
 
     /**
-     * Order by to be executed
+     * OrderBy keys to activate order previously written.
      */
-    private String[]            orderByKey;
+    private String[]            parameterizedOrderBy;
+
+    /**
+     * OrderBy statements to be appended to the query.
+     */
+    private String[]            orderBy;
 
     /**
      * Start row for the results
      */
-    private Long                startRow;
+    private Long                offset;
 
     /**
      * End row for the results
      */
-    private Long                endRow;
+    private Long                limit;
 
     /**
      * Parameters sent to the database
@@ -70,8 +77,8 @@ public class Criteria {
      *
      * @return
      */
-    public String[] getOrderByKey() {
-        return orderByKey;
+    public String[] getParameterizedOrderBy() {
+        return parameterizedOrderBy;
     }
 
     /**
@@ -79,44 +86,8 @@ public class Criteria {
      *
      * @param orderByKey
      */
-    public void setOrderByKey(String... orderByKey) {
-        this.orderByKey = orderByKey;
-    }
-
-    /**
-     * Gets the start row
-     *
-     * @return
-     */
-    public Long getStartRow() {
-        return startRow;
-    }
-
-    /**
-     * Gets the end row
-     *
-     * @return
-     */
-    public Long getEndRow() {
-        return endRow;
-    }
-
-    /**
-     * Sets the start row
-     *
-     * @param orderByKey
-     */
-    public void setStartRow(Long startRow) {
-        this.startRow = startRow;
-    }
-
-    /**
-     * Sets the end row
-     *
-     * @param orderByKey
-     */
-    public void setEndRow(Long endRow) {
-        this.endRow = endRow;
+    public void setParameterizedOrderBy(String... orderByKey) {
+        this.parameterizedOrderBy = orderByKey;
     }
 
     /**
@@ -131,7 +102,7 @@ public class Criteria {
     /**
      * Sets the parameters
      *
-     * @param orderByKey
+     * @param parameterizedOrderBy
      */
     public void setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
@@ -146,7 +117,7 @@ public class Criteria {
      * @return
      */
     public Criteria addParameter(String key, Object value) {
-        if (value == null) {
+        if (!Has.content(value)) {
             if (logger.isInfoEnabled()) {
                 logger.info("Could not add empty value for key:" + key);
             }
@@ -198,13 +169,67 @@ public class Criteria {
 
     /**
      * This is used to activate and "and" statement which doesn't have
-     * parameter.
+     * parameters, only appends another sql statements.
      *
      * @param key
      * @return
      */
     public Criteria activateParameter(String key) {
-        return addParameter(key, "");
+        return addParameter(key, key);
+    }
+
+    /**
+     * Gets the start row for the data to be returned.
+     *
+     * @return
+     */
+    public Long getOffset() {
+        return offset;
+    }
+
+    /**
+     * Sets the start row for the data to be returned.
+     *
+     * @param offset
+     */
+    public void setOffset(Long offset) {
+        this.offset = offset;
+    }
+
+    /**
+     * Gets the amount of rows to be returned.
+     *
+     * @return
+     */
+    public Long getLimit() {
+        return limit;
+    }
+
+    /**
+     * Sets the amount of rows to be returned.
+     *
+     * @param limit
+     */
+    public void setLimit(Long limit) {
+        this.limit = limit;
+    }
+
+    /**
+     * Gets the orderby statements to be appended to the query.
+     *
+     * @return
+     */
+    public String[] getOrderBy() {
+        return orderBy;
+    }
+
+    /**
+     * Sets the order statements to be appended to the query.
+     *
+     * @param orderBy
+     */
+    public void setOrderBy(String... orderBy) {
+        this.orderBy = orderBy;
     }
 
 }

@@ -1,7 +1,7 @@
 package br.com.delogic.csa.repository.sql;
 
 import br.com.delogic.csa.repository.Criteria;
-
+import br.com.delogic.jfunk.Has;
 
 /**
  * Will return the query with start row and end row for Oracle database.
@@ -19,11 +19,15 @@ public class OracleSqlQueryRangeBuilder implements SqlQueryRangeBuilder {
                                                     "WHERE ROWNUM <= %s)  " +
                                                     "WHERE rnum > %s";
 
-    public String buildRangeQuery(String query, Criteria configuration) {
-        long startRow = configuration.getStartRow() != null ? configuration.getStartRow() : 0;
-        long endRow = configuration.getEndRow() != null ? configuration.getEndRow() : Long.MAX_VALUE;
-        String newQuery = String.format(RANGE_QUERY, query, endRow, startRow);
-        return newQuery;
+    public String buildRangeQuery(String query, Criteria criteria) {
+
+        if (Has.content(criteria.getOffset(), criteria.getLimit())) {
+            long offset = criteria.getOffset() != null ? criteria.getOffset() : 0;
+            long endRow = criteria.getLimit() != null ? offset + criteria.getLimit() : Long.MAX_VALUE;
+            query = String.format(RANGE_QUERY, query, endRow, offset);
+        }
+
+        return query;
     }
 
 }

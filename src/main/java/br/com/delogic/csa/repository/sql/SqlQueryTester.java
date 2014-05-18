@@ -16,48 +16,48 @@ public class SqlQueryTester {
         Assert.isTrue(!beans.isEmpty());
 
         for (Entry<String, SqlQuery> entry : beans.entrySet()) {
-            SqlQuery<?> q = entry.getValue();
+            SqlQuery<?> sqlQuery = entry.getValue();
             Criteria config = new Criteria();
-            if (q.getMandatoryParameters() != null) {
-                for (Entry<String, PermittedParameterType> mp : q.getMandatoryParameters().entrySet()) {
+            if (sqlQuery.getMandatoryParameters() != null) {
+                for (Entry<String, PermittedParameterType> mp : sqlQuery.getMandatoryParameters().entrySet()) {
                     config.addParameter(mp.getKey(), mp.getValue().getExample());
                 }
             }
             System.out.println("Running get List complete");
-            int size = q.getList(config).size();
+            int size = sqlQuery.getList(config).size();
             System.out.println("Running get Count complete");
-            Assert.isTrue(size == q.count(config), "Incorrect result for query:" + entry.getKey());
+            Assert.isTrue(size == sqlQuery.count(config), "Incorrect result for query:" + entry.getKey());
 
-            if (Has.content(q.getRegisteredParameters())) {
-                for (Entry<String, PermittedParameterType> pentry : q.getRegisteredParameters().entrySet()) {
+            if (Has.content(sqlQuery.getRegisteredParameters())) {
+                for (Entry<String, PermittedParameterType> pentry : sqlQuery.getRegisteredParameters().entrySet()) {
 
                     System.out.println(entry.getKey() + ":Running get List with individual parameter:" + pentry.getKey());
                     Criteria configIndividualParam = new Criteria();
-                    configIndividualParam.setStartRow(0L);
-                    configIndividualParam.setEndRow(1L);
+                    configIndividualParam.setOffset(0L);
+                    configIndividualParam.setLimit(1L);
                     configIndividualParam.addParameter(pentry.getKey(), pentry.getValue().getExample());
                     if (config.getParameters() != null) {
                         for (Entry<String, Object> mandatoryParams : config.getParameters().entrySet()) {
                             configIndividualParam.addParameter(mandatoryParams.getKey(), mandatoryParams.getValue());
                         }
                     }
-                    q.getList(configIndividualParam);
+                    sqlQuery.getList(configIndividualParam);
 
                     config.addParameter(pentry.getKey(), pentry.getValue().getExample());
                 }
             }
-            if (Has.content(q.getOrders())) {
-                config.setOrderByKey(q.getOrders().keySet().toArray(new String[q.getOrders().size()]));
+            if (Has.content(sqlQuery.getParameterizedOrderBy())) {
+                config.setParameterizedOrderBy(sqlQuery.getParameterizedOrderBy().keySet().toArray(new String[sqlQuery.getParameterizedOrderBy().size()]));
             }
             System.out.println("Running get List with parameters");
-            int psize = q.getList(config).size();
+            int psize = sqlQuery.getList(config).size();
             System.out.println("Running get Count with parameters");
-            Assert.isTrue(psize == q.count(config), "Incorrect result for query:" + entry.getKey());
+            Assert.isTrue(psize == sqlQuery.count(config), "Incorrect result for query:" + entry.getKey());
 
-            config.setStartRow(1L);
-            config.setEndRow(2L);
+            config.setOffset(1L);
+            config.setLimit(2L);
             System.out.println("Running get List with parameters and row number");
-            q.getList(config);
+            sqlQuery.getList(config);
 
         }
 
