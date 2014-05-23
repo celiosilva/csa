@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.persistence;
+package br.com.delogic.csa.repository.filter;
 
 public interface Filter<E> {
 

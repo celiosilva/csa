@@ -1,9 +1,9 @@
-package br.com.delogic.csa.manager.persistence.jpa;
+package br.com.delogic.csa.repository.jpa;
 
 import javax.persistence.EntityManager;
 
-import br.com.delogic.csa.manager.persistence.From;
-import br.com.delogic.csa.manager.persistence.With;
+import br.com.delogic.csa.repository.filter.From;
+import br.com.delogic.csa.repository.filter.With;
 
 public class JpaFromImpl implements From {
 

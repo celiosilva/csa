@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.persistence.jpa;
+package br.com.delogic.csa.repository.jpa;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.delogic.csa.manager.persistence.Then;
+import br.com.delogic.csa.repository.filter.Then;
 
 public class JpaThenImpl<E> implements Then {
 

@@ -1,14 +1,14 @@
-package br.com.delogic.csa.manager.persistence.jpa;
+package br.com.delogic.csa.repository.jpa;
 
 import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import br.com.delogic.csa.manager.RepositoryManager;
-import br.com.delogic.csa.manager.persistence.With;
+import br.com.delogic.csa.repository.EntityRepository;
+import br.com.delogic.csa.repository.filter.With;
 
-public class JpaRepositoryManagerImpl implements RepositoryManager {
+public class JpaEntityRepositoryImpl implements EntityRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -73,12 +73,6 @@ public class JpaRepositoryManagerImpl implements RepositoryManager {
 
     private void refresh(Object entidade) {
         entityManager.refresh(entidade);
-        // removed dependency from EclipseLink
-        // ReadObjectQuery query = new ReadObjectQuery(entidade);
-        // query.setShouldLoadResultIntoSelectionObject(true);
-        // EntityManagerImpl em = (EntityManagerImpl)
-        // getEntityManager().getDelegate();
-        // em.getActiveSession().executeQuery(query);
     }
 
     @Override

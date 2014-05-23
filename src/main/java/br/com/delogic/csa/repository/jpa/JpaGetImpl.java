@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.persistence.jpa;
+package br.com.delogic.csa.repository.jpa;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.delogic.csa.manager.persistence.Get;
+import br.com.delogic.csa.repository.filter.Get;
 
 public class JpaGetImpl<E> implements Get<E> {
 

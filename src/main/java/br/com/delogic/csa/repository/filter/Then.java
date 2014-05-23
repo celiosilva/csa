@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.persistence;
+package br.com.delogic.csa.repository.filter;
 
 /**
  * Performs modifications into the repository once a filter or no filter is

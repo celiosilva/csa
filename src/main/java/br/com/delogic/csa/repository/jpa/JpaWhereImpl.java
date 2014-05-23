@@ -1,11 +1,11 @@
-package br.com.delogic.csa.manager.persistence.jpa;
+package br.com.delogic.csa.repository.jpa;
 
 import javax.persistence.EntityManager;
 
-import br.com.delogic.csa.manager.persistence.Filter;
-import br.com.delogic.csa.manager.persistence.Get;
-import br.com.delogic.csa.manager.persistence.Then;
-import br.com.delogic.csa.manager.persistence.With;
+import br.com.delogic.csa.repository.filter.Filter;
+import br.com.delogic.csa.repository.filter.Get;
+import br.com.delogic.csa.repository.filter.Then;
+import br.com.delogic.csa.repository.filter.With;
 
 public class JpaWhereImpl<E> implements With<E> {
 
@@ -25,7 +25,7 @@ public class JpaWhereImpl<E> implements With<E> {
      * Delegates to andAttribute method
      */
     @Override
-    public Filter<E> attrb() {
+    public Filter<E> atr() {
         return andAttribute();
     }
 

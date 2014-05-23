@@ -1,21 +1,21 @@
-package br.com.delogic.csa.manager;
+package br.com.delogic.csa.repository;
 
 import java.util.Collection;
 
-import br.com.delogic.csa.manager.persistence.With;
+import br.com.delogic.csa.repository.filter.With;
 
 /**
- * Manages the persistent objects in the application. Main implementation relies
- * on JPA and databases but it can also be implemented for XML data, web
- * services, etc. This should not be extended nor used as Repository pattern,
- * but should be used inside the repositories or business services to have more
+ * Manages the entity objects in the application. Main implementation relies on
+ * JPA and databases but it can also be implemented for XML data or web
+ * services. This should not be extended nor used as Repository pattern, but
+ * should be used inside the repositories or business services to have more
  * control over the entities. This repository follows the CRUD pattern.
  *
  * @author celio@delogic.com.br
  *
  * @since 13/12/2013
  */
-public interface RepositoryManager {
+public interface EntityRepository {
 
     /**
      * Creates a new entity

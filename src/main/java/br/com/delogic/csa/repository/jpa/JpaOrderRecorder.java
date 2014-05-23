@@ -1,4 +1,4 @@
-package br.com.delogic.csa.manager.persistence.jpa;
+package br.com.delogic.csa.repository.jpa;
 
 import java.util.LinkedList;
 

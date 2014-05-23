@@ -1,6 +1,6 @@
-package br.com.delogic.csa.manager.persistence.jpa;
+package br.com.delogic.csa.repository.jpa;
 
-import br.com.delogic.csa.manager.persistence.Filter;
+import br.com.delogic.csa.repository.filter.Filter;
 
 public class JpaFilterImpl<E> implements Filter<E> {
 
