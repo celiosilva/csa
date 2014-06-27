@@ -1,5 +1,6 @@
 package br.com.delogic.csa.repository.sql;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -26,6 +27,7 @@ import br.com.delogic.csa.repository.Criteria;
 import br.com.delogic.csa.repository.QueryRepository;
 import br.com.delogic.csa.repository.RepositoryData;
 import br.com.delogic.jfunk.Has;
+import br.com.delogic.jfunk.data.Result;
 
 /**
  * A {@code Query} represents a SQL wrapped component which allows to execute
@@ -311,14 +313,11 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
      *            parameters configured in the query
      * @return T The first item POJO mapped found
      */
-    public T getFirst(Criteria criteria) {
+    public Result<T> getFirst(Criteria criteria) {
         maybeInitializeQuery();
 
         Map<String, Object> params = extractParams(criteria);
 
-        if (criteria == null) {
-            criteria = new Criteria();
-        }
         // getting only the first result
         criteria.setLimit(1L);
 
@@ -333,9 +332,9 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         maybeLogQueryReturn(data);
 
         if (data.isEmpty()) {
-            return null;
+            return new Result<T>(null);
         } else {
-            return data.get(0);
+            return new Result<T>(data.get(0));
         }
 
     }
@@ -413,7 +412,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
         }
 
         boolean orderByAppended = false;
-        //append more reliable order by statements
+        // append more reliable order by statements
         if (criteria != null && Has.content(criteria.getParameterizedOrderBy())) {
             for (String orderByKey : criteria.getParameterizedOrderBy()) {
                 if (parameterizedOrderBy.containsKey(orderByKey)) {
@@ -424,7 +423,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
             }
         }
 
-        //append order by coming from the criteria
+        // append order by coming from the criteria
         if (criteria != null && Has.content(criteria.getOrderBy())) {
             for (String orderStmt : criteria.getOrderBy()) {
                 query.append(orderByAppended ? ", " : ORDER_STATEMENT).append(orderStmt);
@@ -432,7 +431,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
             }
         }
 
-        //append configured order by statements
+        // append configured order by statements
         if (Has.content(orderBy)) {
             query.append(orderByAppended ? ", " : ORDER_STATEMENT).append(orderBy);
             orderByAppended = true;
@@ -830,11 +829,40 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
     }
 
     public RepositoryData<T> getData() {
-        return new RepositoryData<T>(count(), getList());
+        return getData(new Criteria());
     }
 
     public RepositoryData<T> getData(Criteria criteria) {
-        return new RepositoryData<T>(count(criteria), getList(criteria));
+        // if we're getting everything from database
+        if (criteria.getLimit() == null) {
+            // get all data
+            List<T> data = getList(criteria);
+            // if there's an offset
+            if (Has.content(criteria.getOffset())) {
+                // we sum this value with the result without actually counting
+                return new RepositoryData<T>(data.size() + criteria.getOffset(), data);
+            } else {
+                // if there's no offset just get the data size
+                return new RepositoryData<T>(data.size(), data);
+            }
+        }
+
+        // otherwise we count the database
+        long amount = count(criteria);
+        // if there are no results or the offset is higher than the amount of
+        // results
+        if (amount == 0 || (Has.content(criteria.getOffset()) && criteria.getOffset().longValue() > amount)) {
+            // return the repository data without going to the database
+            return new RepositoryData<T>(amount, new ArrayList<T>());
+        } else {
+            // there will be data to show so we call the database again
+            return new RepositoryData<T>(amount, getList(criteria));
+        }
+    }
+
+    @Override
+    public Result<T> getFirst() {
+        return getFirst(new Criteria());
     }
 
 }
