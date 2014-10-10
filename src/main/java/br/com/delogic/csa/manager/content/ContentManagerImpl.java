@@ -1,6 +1,7 @@
 package br.com.delogic.csa.manager.content;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,6 +78,10 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
             throw new RuntimeException("Cannot save content with name "
                 + fileName, e);
         }
+    }
+
+    public InputStream getInpuStream(String name) throws Exception {
+        return new FileInputStream(absolutePath + File.separatorChar + name);
     }
 
     public Resource getDirectory() {

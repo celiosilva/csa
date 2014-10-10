@@ -52,4 +52,17 @@ public interface ContentManager {
      */
     String get(String name);
 
+    /**
+     * Returns the input stream for the content. If the content is saved to the
+     * current server than will return a local InputStream. if content is saved
+     * remotely than will return a remote input stream.
+     *
+     * @param name
+     *            of the content
+     * @return InputStream
+     * @throws Exceptions
+     *             thrown by IO
+     */
+    InputStream getInpuStream(String name) throws Exception;
+
 }
