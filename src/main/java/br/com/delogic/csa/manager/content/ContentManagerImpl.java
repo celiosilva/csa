@@ -64,7 +64,7 @@ public class ContentManagerImpl implements ContentManager, ServletContextAware {
             throw new IllegalArgumentException(
                 "File name doesn't have any extension");
         }
-        return fileName.substring(fileName.indexOf(".") + 1);
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     public static void saveToServer(InputStream inputStream,
