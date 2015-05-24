@@ -191,6 +191,7 @@ public class SqlQuery<T> implements InitializingBean, QueryRepository<T> {
          */
         Pattern pattern = Pattern.compile(":\\w+:\\w+");
         select = removeMandatoryParamType(select, pattern, mandatoryParameters);
+        from = removeMandatoryParamType(from, pattern, mandatoryParameters);
         where = removeMandatoryParamType(where, pattern, mandatoryParameters);
         orderBy = removeMandatoryParamType(orderBy, pattern, mandatoryParameters);
         groupBy = removeMandatoryParamType(groupBy, pattern, mandatoryParameters);
