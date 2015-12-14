@@ -21,7 +21,7 @@ public class OracleSqlQueryRangeBuilder implements SqlQueryRangeBuilder {
 
     public String buildRangeQuery(String query, Criteria criteria) {
 
-        if (Has.content(criteria.getOffset(), criteria.getLimit())) {
+        if (Has.content(criteria.getOffset()) || Has.content(criteria.getLimit())) {
             long offset = criteria.getOffset() != null ? criteria.getOffset() : 0;
             long endRow = criteria.getLimit() != null ? offset + criteria.getLimit() : Long.MAX_VALUE;
             query = String.format(RANGE_QUERY, query, endRow, offset);
